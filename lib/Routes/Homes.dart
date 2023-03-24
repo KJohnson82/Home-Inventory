@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../main.dart';
-
-TextEditingController _houseName = TextEditingController();
+import 'package:get/get.dart';
 
 class House {
   int? homeId;
@@ -12,20 +11,29 @@ class House {
   House({this.homeId, this.homeName, this.rooms});
 }
 
-int highestId = _homes.isEmpty
-    ? 0
-    : _homes.map((e) => e.homeId!).reduce((a, b) => a > b ? a : b);
+class HomeController extends GetxController {
+  var highestId = 0.obs;
+
+  var homeNameController = TextEditingController();
+
+  List<House> homes = [];
+}
+
 List<House> _homes = [];
-House newHouse = House(homeId: highestId + 1, homeName: 'New House', rooms: []);
+// House newHouse = House(homeId: highestId + 1, homeName: 'New House', rooms: []);
 
-
-void main() => runApp(const HomesPage());
+void main() => runApp(const GetMaterialApp(home: HomesPage()));
 
 class HomesPage extends StatelessWidget {
   const HomesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController _houseName = TextEditingController();
+    int highestId = _homes.isEmpty
+        ? 0
+        : _homes.map((e) => e.homeId!).reduce((a, b) => a > b ? a : b);
+
     return MaterialApp(
       title: 'Material App',
       home: Scaffold(
@@ -33,9 +41,9 @@ class HomesPage extends StatelessWidget {
           title: Text('HOMEVENTORY'),
         ),
         body: GridView.builder(
-          padding: EdgeInsets.fromLTRB(50, 50, 50, 100),
+          padding: const EdgeInsets.fromLTRB(50, 50, 50, 100),
           itemCount: _homes.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             mainAxisSpacing: 30,
             crossAxisSpacing: 30,
@@ -48,34 +56,38 @@ class HomesPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(15),
                 shape: BoxShape.rectangle,
               ),
+              child: Text(_homes[index].homeName ?? ''),
             );
           },
         ),
         floatingActionButton: FloatingActionButton.large(
           elevation: 4,
           foregroundColor: Colors.white,
-          child: Icon(
+          child: const Icon(
             Icons.house_rounded,
             size: 60,
           ),
           onPressed: () {
             showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Text("Enter New Home Name: "),
-                    content: TextField(
-                      controller: _houseName,
-                      decoration: InputDecoration(hintText: 'Home Name'),
-                    ),
-                    actions: [
-                      addHouse(context),
-                      // ElevatedButton(onPressed: () {
-                      //   addHouse(context);
-                      // }, child: child)
-                    ],
-                  );
-                },
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text("Enter New Home Name: "),
+                  content: TextField(
+                    controller: _houseName,
+                    decoration: const InputDecoration(hintText: 'Home Name'),
+                  ),
+                  actions: [
+                    ElevatedButton(
+                        onPressed: () {
+                          // _homes[highestId].homeName = _houseName.text;
+                          // homeCount();
+                          addHouse(context, _houseName.text, highestId);
+                        },
+                        child: const Text("Save"))
+                  ],
+                );
+              },
             );
           },
         ),
@@ -84,57 +96,46 @@ class HomesPage extends StatelessWidget {
   }
 }
 
+void addHouse(BuildContext context, String houseName, int highestId) {
+  // _homes.add(House());
+  _homes.add(House(homeId: highestId + 1, homeName: houseName, rooms: []));
+  Navigator.pop(context);
 
-addHouse(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text("Enter New Home Name: "),
-        content: TextField(
-          controller: _houseName,
-          decoration: const InputDecoration(hintText: 'Home Name'),
-        ),
-        actions: [
-          ElevatedButton(onPressed: () {
-            newHouse.homeName = _houseName.text;
-            homeCount();
-          }, child: const Text("Save"))
-        ],
-      );
-    },
-  );
-}
 
-homeCount() {
-  if (highestId >= 0 && highestId < 4) {
-    newHouse.homeId = (newHouse.homeId! + 1);
-  }
-  else if (highestId > 3) {
-    null;
-  }
+
+  print(_homes[highestId].homeName);
 }
 
 
-// class newHome extends StatefulWidget {
-//   const newHome({Key? key}) : super(key: key);
-//
-//   @override
-//   State<newHome> createState() => _newHomeState();
-// }
-//
-// class _newHomeState extends State<newHome> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         GridView.builder(
-//             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-//                 crossAxisCount: 3,
-//             ),
-//             itemBuilder: itemBuilder,
+// addHouse(BuildContext context) {
+//   showDialog(
+//     context: context,
+//     builder: (BuildContext context) {
+//       return AlertDialog(
+//         title: const Text("Enter New Home Name: "),
+//         content: TextField(
+//           controller: _houseName,
+//           decoration: const InputDecoration(hintText: 'Home Name'),
 //         ),
-//       ],
-//     );
+//         actions: [
+//           // ElevatedButton(
+//           //     onPressed: () {
+//           //       newHouse.homeName = _houseName.text;
+//           //       homeCount();
+//           //     },
+//           //     child: const Text("Save"))
+//         ],
+//       );
+//     },
+//   );
+// }
+
+
+
+// homeCount() {
+//   if (highestId >= 0 && highestId < 4) {
+//     newHouse.homeId = (newHouse.homeId! + 1);
+//   } else if (highestId > 3) {
+//     null;
 //   }
 // }

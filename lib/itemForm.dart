@@ -35,16 +35,7 @@ class ItemFormPage extends StatelessWidget {
 
       ),
       title: 'Material App',
-      home: Scaffold(
-        appBar: AppBar(
-
-          title: Text('Material App Bar'),
-        ),
-        body: Center(
-          child: SizedBox(
-              child: ItemForm()),
-        ),
-      ),
+      home: ItemForm(),
     );
   }
 }
@@ -116,17 +107,13 @@ class _ItemFormState extends State<ItemForm> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        colorScheme: const ColorScheme.dark(),
-
-      ),
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: const Text('Add New Item'),
         ),
         body: Form(
           child: ListView(
+            controller: ScrollController(),
             children: [
               TextFormField(
                 controller: _itemNameController,
@@ -205,7 +192,6 @@ class _ItemFormState extends State<ItemForm> {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 }
