@@ -3,32 +3,40 @@ import 'package:get/get.dart';
 import 'package:homeinventory/main.dart';
 import 'Homes.dart';
 import 'Rooms.dart';
-import 'package:homeinventory/Routes/itemForm.dart';
+import 'package:homeinventory/itemForm.dart';
 
-
-
-class RoomItem {
+class Item {
   int? itemId;
-  String? itemDesc;  //Item Name
-  List<Item>? items;
+  String? itemDisc;
+  String? itemType;
+  String? itemSubtype;
+  String? itemBrand;
+  String? itemModel;
+  String? itemDimensions;
+  String? itemNotes;
+  // File? itemImage;
 
-  RoomItem({
+  Item({
     required this.itemId,
-    required this.itemDesc, //Item Name
-    this.items
-
+    required this.itemDisc,
+    required this.itemType,
+    this.itemSubtype,
+    this.itemBrand,
+    this.itemModel,
+    required this.itemDimensions,
+    this.itemNotes,
+    // this.itemImage,
   });
 }
 
-class RoomItemController extends GetxController {
+class ItemController extends GetxController {
   var highestId = 0.obs;
   var items = <Item>[].obs;
 
-  void addRoomItem(String itemName) {
-    if (items.length < 50) {
+  void addItem(String itemName) {
+    if (items.length < 10) {
       int newId = (highestId.value + 1);
-      // items.add(RoomItem(itemId: newId, items: items, itemDesc: items.));
-      items.add(Item(itemId: newId, itemName:_itemNamController.text, itemType: itemType, itemDimensions: itemDimensions));
+      items.add(Item(itemId: newId, itemDisc: itemName, itemType: , items: []));
       highestId.value = newId;
     }
   }
@@ -36,18 +44,18 @@ class RoomItemController extends GetxController {
 
 void main() => runApp(const GetMaterialApp(home: RoomsPage()));
 
-class RoomItemPage extends StatelessWidget {
-  const RoomItemPage({Key? key}) : super(key: key);
+class RoomsPage extends StatelessWidget {
+  const RoomsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     TextEditingController _itemName = TextEditingController();
 
-    return GetBuilder<RoomItemController>(
-        init: RoomItemController(),
+    return GetBuilder<RoomController>(
+        init: RoomController(),
         builder: (controller) {
           return MaterialApp(
-            title: 'Items',
+            title: 'Material App',
             home: Scaffold(
               appBar: AppBar(
                 title: const Text('HOMEVENTORY'),
@@ -56,7 +64,7 @@ class RoomItemPage extends StatelessWidget {
               body: Obx(
                     () => GridView.builder(
                     padding: const EdgeInsets.all(100),
-                    itemCount: controller.items.length,
+                    itemCount: controller.rooms.length,
                     gridDelegate:
                     const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
@@ -72,14 +80,14 @@ class RoomItemPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(15),
                           shape: BoxShape.rectangle,
                         ),
-                        child: Text(controller.items[index].itemName ?? ''),
+                        child: Text(controller.rooms[index].roomDisc ?? ''),
                       );
                     }),
               ),
               floatingActionButton: Obx(() => FloatingActionButton.large(
                 elevation: 4,
                 foregroundColor: Colors.white,
-                onPressed: controller.items.length >= 10
+                onPressed: controller.rooms.length >= 10
                     ? null
                     : () {
                   showDialog(
@@ -88,14 +96,14 @@ class RoomItemPage extends StatelessWidget {
                         return AlertDialog(
                           title: const Text('Enter New Room Name: '),
                           content: TextField(
-                            controller: _itemName,
+                            controller: _roomName,
                             decoration: const InputDecoration(
-                                hintText: 'Item Name'),
+                                hintText: 'Room Name'),
                           ),
                           actions: [
                             ElevatedButton(
                               onPressed: () {
-                                controller.addRoomItem(_itemName.text);
+                                controller.addRoom(_roomName.text);
                                 Navigator.pop(context);
                               },
                               child: const Text('Save'),
@@ -104,7 +112,7 @@ class RoomItemPage extends StatelessWidget {
                         );
                       });
                 },
-                child: const Icon(Icons.add_box_outlined),
+                child: const Icon(Icons.add_home_work_outlined),
               )),
             ),
           );

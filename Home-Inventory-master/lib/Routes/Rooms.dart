@@ -6,9 +6,9 @@ import 'Homes.dart';
 class Room {
   int? roomId;
   String? roomDisc;
-  List<Item>? roomItems;
+  List<Item>? items;
 
-  Room({this.roomId, this.roomDisc, this.roomItems});
+  Room({this.roomId, this.roomDisc, this.items});
 }
 
 class RoomController extends GetxController {
@@ -18,7 +18,7 @@ class RoomController extends GetxController {
   void addRoom(String roomName) {
     if (rooms.length < 10) {
       int newId = (highestId.value + 1);
-      rooms.add(Room(roomId: newId, roomDisc: roomName, roomItems: []));
+      rooms.add(Room(roomId: newId, roomDisc: roomName, items: []));
       highestId.value = newId;
     }
   }
@@ -37,7 +37,7 @@ class RoomsPage extends StatelessWidget {
         init: RoomController(),
         builder: (controller) {
           return MaterialApp(
-            title: 'Rooms',
+            title: 'Material App',
             home: Scaffold(
               appBar: AppBar(
                 title: const Text('HOMEVENTORY'),
