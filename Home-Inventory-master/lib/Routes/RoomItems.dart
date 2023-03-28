@@ -3,40 +3,68 @@ import 'package:get/get.dart';
 import 'package:homeinventory/main.dart';
 import 'Homes.dart';
 import 'Rooms.dart';
-import 'package:homeinventory/itemForm.dart';
+import 'package:homeinventory/Routes/itemForm.dart';
 
-class Item {
+import 'itemFormX.dart';
+
+
+
+class RoomItem {
   int? itemId;
-  String? itemDisc;
-  String? itemType;
-  String? itemSubtype;
-  String? itemBrand;
-  String? itemModel;
-  String? itemDimensions;
-  String? itemNotes;
-  // File? itemImage;
+  String? itemDesc;  //Item Name
+  List<Item>? items;
 
-  Item({
+  RoomItem({
     required this.itemId,
-    required this.itemDisc,
-    required this.itemType,
-    this.itemSubtype,
-    this.itemBrand,
-    this.itemModel,
-    required this.itemDimensions,
-    this.itemNotes,
-    // this.itemImage,
+    required this.itemDesc, //Item Name
+    this.items
+
   });
 }
 
-class ItemController extends GetxController {
-  var highestId = 0.obs;
-  var items = <Item>[].obs;
+// class Item {
+//   int? itemId;
+//   String? itemName;
+//   String? itemType;
+//   String? itemSubtype;
+//   String? itemBrand;
+//   String? itemModel;
+//   String? itemDimensions;
+//   String? itemNotes;
+//   // File? itemImage;
+//
+//   Item({
+//     required this.itemId,
+//     required this.itemName,
+//     required this.itemType,
+//     this.itemSubtype,
+//     this.itemBrand,
+//     this.itemModel,
+//     this.itemDimensions,
+//     this.itemNotes,
+//     // this.itemImage,
+//   });
+// }
+//
+// class ItemController extends GetxController {
+//   final items = <Item>[].obs;
+//
+//   void addItem(Item item) {
+//     items.add(item);
+//   }
+// }
 
-  void addItem(String itemName) {
-    if (items.length < 10) {
+
+class RoomItemController extends GetxController {
+  var highestId = 0.obs;
+  // var items = <Item>[].obs;
+  get roomItems => ItemController().items;
+
+  void addRoomItem(String itemName) {
+    if (roomItems.length < 50) {
       int newId = (highestId.value + 1);
-      items.add(Item(itemId: newId, itemDisc: itemName, itemType: , items: []));
+      // items.add(RoomItem(itemId: newId, items: items, itemDesc: items.));
+      itemName = ItemController().items[0].itemName!;
       highestId.value = newId;
     }
   }
@@ -44,18 +72,19 @@ class ItemController extends GetxController {
 
 void main() => runApp(const GetMaterialApp(home: RoomsPage()));
 
-class RoomsPage extends StatelessWidget {
-  const RoomsPage({Key? key}) : super(key: key);
+class RoomItemPage extends StatelessWidget {
+  const RoomItemPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController _itemName = TextEditingController();
+    // TextEditingController _itemName = TextEditingController();
+    final ItemController itemController = Get.put(ItemController());
 
-    return GetBuilder<RoomController>(
-        init: RoomController(),
+    return GetBuilder<RoomItemController>(
+        init: RoomItemController(),
         builder: (controller) {
-          return MaterialApp(
-            title: 'Material App',
+          return GetMaterialApp(
+            title: 'Items',
             home: Scaffold(
               appBar: AppBar(
                 title: const Text('HOMEVENTORY'),
@@ -64,7 +93,7 @@ class RoomsPage extends StatelessWidget {
               body: Obx(
                     () => GridView.builder(
                     padding: const EdgeInsets.all(100),
-                    itemCount: controller.rooms.length,
+                    itemCount: controller.roomItems.length,
                     gridDelegate:
                     const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
@@ -80,39 +109,40 @@ class RoomsPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(15),
                           shape: BoxShape.rectangle,
                         ),
-                        child: Text(controller.rooms[index].roomDisc ?? ''),
+                        child: Text(controller.roomItems[index].itemName ?? ''),
                       );
                     }),
               ),
               floatingActionButton: Obx(() => FloatingActionButton.large(
                 elevation: 4,
                 foregroundColor: Colors.white,
-                onPressed: controller.rooms.length >= 10
-                    ? null
-                    : () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: const Text('Enter New Room Name: '),
-                          content: TextField(
-                            controller: _roomName,
-                            decoration: const InputDecoration(
-                                hintText: 'Room Name'),
-                          ),
-                          actions: [
-                            ElevatedButton(
-                              onPressed: () {
-                                controller.addRoom(_roomName.text);
-                                Navigator.pop(context);
-                              },
-                              child: const Text('Save'),
-                            )
-                          ],
-                        );
-                      });
-                },
-                child: const Icon(Icons.add_home_work_outlined),
+                onPressed: controller.roomItems.length >= 10
+                    ? null :
+                () => Get.to(() => ItemForm()),
+                //     : () {
+                //   showDialog(
+                //       context: context,
+                //       builder: (context) {
+                //         return AlertDialog(
+                //           title: const Text('Enter New Room Name: '),
+                //           content: TextField(
+                //             controller: _itemName,
+                //             decoration: const InputDecoration(
+                //                 hintText: 'Item Name'),
+                //           ),
+                //           actions: [
+                //             ElevatedButton(
+                //               onPressed: () {
+                //                 controller.addRoomItem(_itemName.text);
+                //                 Navigator.pop(context);
+                //               },
+                //               child: const Text('Save'),
+                //             )
+                //           ],
+                //         );
+                //       });
+                // },
+                child: const Icon(Icons.add_box_outlined),
               )),
             ),
           );
