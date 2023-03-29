@@ -1,105 +1,103 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:homeinventory/main.dart';
+import 'Homes.dart';
 
-class House {
-  int? homeId;
-  String? homeName;
-  List<Room>? rooms;
+class Room {
+  int? roomId;
+  String? roomDisc;
+  List<Item>? items;
 
-  House({this.homeId, this.homeName, this.rooms});
+  Room({this.roomId, this.roomDisc, this.items});
 }
 
-class HomeController extends GetxController {
+class RoomController extends GetxController {
   var highestId = 0.obs;
-  var homes = <House>[].obs;
+  var rooms = <Room>[].obs;
 
-  void addHouse(String houseName) {
-    if (homes.length < 3) {
+  void addRoom(String roomName) {
+    if (rooms.length < 10) {
       int newId = (highestId.value + 1);
-      homes.add(House(homeId: newId, homeName: houseName, rooms: []));
+      rooms.add(Room(roomId: newId, roomDisc: roomName, items: []));
       highestId.value = newId;
     }
   }
 }
 
-void main() => runApp(const GetMaterialApp(home: HomesPage()));
+void main() => runApp(const GetMaterialApp(home: RoomsPage()));
 
-class HomesPage extends StatelessWidget {
-  const HomesPage({Key? key}) : super(key: key);
+class RoomsPage extends StatelessWidget {
+  const RoomsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController _houseName = TextEditingController();
+    TextEditingController _roomName = TextEditingController();
 
-    return GetBuilder<HomeController>(
-      init: HomeController(),
-      builder: (controller) {
-        return MaterialApp(
-          title: 'Material App',
-          home: Scaffold(
-            appBar: AppBar(
-              title: Text('HOMEVENTORY'),
-            ),
-            body: Obx(
-              () => GridView.builder(
-                padding: const EdgeInsets.fromLTRB(50, 50, 50, 100),
-                itemCount: controller.homes.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 30,
-                  crossAxisSpacing: 30,
-                ),
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.circular(15),
-                      shape: BoxShape.rectangle,
-                    ),
-                    child: Text(controller.homes[index].homeName ?? ''),
-                  );
-                },
+    return GetBuilder<RoomController>(
+        init: RoomController(),
+        builder: (controller) {
+          return MaterialApp(
+            title: 'Material App',
+            home: Scaffold(
+              appBar: AppBar(
+                title: const Text('HOMEVENTORY'),
+                centerTitle: true,
               ),
-            ),
-            floatingActionButton: Obx(
-              () => FloatingActionButton.large(
+              body: Obx(
+                    () => GridView.builder(
+                    padding: const EdgeInsets.all(100),
+                    itemCount: controller.rooms.length,
+                    gridDelegate:
+                    const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 30,
+                      crossAxisSpacing: 40,
+                    ),
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        alignment: Alignment.center,
+                        // padding: EdgeInsets.fromLTRB(120, 100, 120 , 100),
+                        decoration: BoxDecoration(
+                          color: Colors.blueAccent,
+                          borderRadius: BorderRadius.circular(15),
+                          shape: BoxShape.rectangle,
+                        ),
+                        child: Text(controller.rooms[index].roomDisc ?? ''),
+                      );
+                    }),
+              ),
+              floatingActionButton: Obx(() => FloatingActionButton.large(
                 elevation: 4,
                 foregroundColor: Colors.white,
-                child: const Icon(
-                  Icons.house_rounded,
-                  size: 60,
-                ),
-                onPressed: controller.homes.length >= 3 ? null : () {
+                onPressed: controller.rooms.length >= 10
+                    ? null
+                    : () {
                   showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text("Enter New Home Name: "),
-                        content: TextField(
-                          controller: _houseName,
-                          decoration:
-                              const InputDecoration(hintText: 'Home Name'),
-                        ),
-                        actions: [
-                          ElevatedButton(
-                            onPressed: () {
-                              controller.addHouse(_houseName.text);
-                              Navigator.pop(context);
-                            },
-                            child: const Text("Save"),
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text('Enter New Room Name: '),
+                          content: TextField(
+                            controller: _roomName,
+                            decoration: const InputDecoration(
+                                hintText: 'Room Name'),
                           ),
-                        ],
-                      );
-                    },
-                  );
+                          actions: [
+                            ElevatedButton(
+                              onPressed: () {
+                                controller.addRoom(_roomName.text);
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Save'),
+                            )
+                          ],
+                        );
+                      });
                 },
-              ),
+                child: const Icon(Icons.add_home_work_outlined),
+              )),
             ),
-          ),
-        );
-      },
-    );
+          );
+        });
   }
 }

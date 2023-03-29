@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // import 'package:firebase_core_web/firebase_core_web_interop.dart';
 // import 'firebase_options.dart';
 // import 'package:firebase_core/firebase_core.dart';
-import 'itemForm.dart';
+import 'Routes/itemForm.dart';
 import 'Theme/colorTheme.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:homeinventory/Routes/Homes.dart';
@@ -38,6 +38,7 @@ class Item {
   String? itemBrand;
   String? itemModel;
   String? itemDimensions;
+  String? itemColor;
   String? itemNotes;
   // File? itemImage;
 
@@ -48,7 +49,8 @@ class Item {
     this.itemSubtype,
     this.itemBrand,
     this.itemModel,
-    required this.itemDimensions,
+    this.itemDimensions,
+    this.itemColor,
     this.itemNotes,
     // this.itemImage,
   });
