@@ -1,54 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:homeinventory/main.dart';
+import 'Homes.dart';
+import 'RoomItems.dart';
 
-class House {
-  int? homeId;
-  String? homeName;
-  List<Room>? rooms;
+class Room {
+  int? roomId;
+  String? roomName;
+  List<Item>? items;
 
-  House({this.homeId, this.homeName, this.rooms});
+  Room({this.roomId, this.roomName, this.items});
 }
 
-class HomeController extends GetxController {
-  var highestId = 0.obs;
-  var homes = <House>[].obs;
+var home = Get.arguments as Home;
 
-  void addHouse(String houseName) {
-    if (homes.length < 3) {
+class RoomController extends GetxController {
+  var highestId = 0.obs;
+  var rooms = <Room>[].obs;
+
+  void addRoom(String roomName) {
+    if (rooms.length < 10) {
       int newId = (highestId.value + 1);
-      homes.add(House(homeId: newId, homeName: houseName, rooms: []));
+      rooms.add(Room(roomId: newId, roomName: roomName, items: []));
       highestId.value = newId;
     }
   }
 }
 
-void main() => runApp(const GetMaterialApp(home: HomesPage()));
+void main() => runApp(GetMaterialApp(home: RoomsPage()));
 
-class HomesPage extends StatelessWidget {
-  const HomesPage({Key? key}) : super(key: key);
+class RoomsPage extends StatelessWidget {
+  RoomsPage({Key? key}) : super(key: key);
+  final TextEditingController _roomName = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController _houseName = TextEditingController();
-
-    return GetBuilder<HomeController>(
-      init: HomeController(),
+    return GetBuilder<RoomController>(
+      init: RoomController(),
       builder: (controller) {
         return MaterialApp(
-          title: 'Material App',
+          title: 'Rooms',
           home: Scaffold(
             appBar: AppBar(
-              title: Text('HOMEVENTORY'),
+              leading: BackButton(
+                onPressed: () => Get.back(),
+              ),
+              title: Text('HOMEVENTORY: ${home.homeName}'),
+              centerTitle: true,
             ),
             body: Obx(
               () => GridView.builder(
-                padding: const EdgeInsets.fromLTRB(50, 50, 50, 100),
-                itemCount: controller.homes.length,
+                padding: const EdgeInsets.all(50),
+                itemCount: controller.rooms.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 30,
-                  crossAxisSpacing: 30,
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 20,
+                  crossAxisSpacing: 40,
                 ),
                 itemBuilder: (BuildContext context, int index) {
                   return Container(
@@ -58,7 +66,7 @@ class HomesPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(15),
                       shape: BoxShape.rectangle,
                     ),
-                    child: Text(controller.homes[index].homeName ?? ''),
+                    child: Text(controller.rooms[index].roomName ?? ''),
                   );
                 },
               ),
@@ -67,34 +75,50 @@ class HomesPage extends StatelessWidget {
               () => FloatingActionButton.large(
                 elevation: 4,
                 foregroundColor: Colors.white,
+                onPressed: controller.rooms.length >= 10
+                    ? null
+                    : () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text("Enter New Room Name: "),
+                              content: TextField(
+                                controller: _roomName,
+                                decoration: const InputDecoration(
+                                    hintText: 'Room Name'),
+                                focusNode: _focusNode,
+                                autofocus: true,
+                                onSubmitted: (value) {
+                                  controller.addRoom(_roomName.text);
+                                  _roomName.clear();
+                                  Navigator.pop(context);
+                                },
+                                onTap: () {
+                                  _focusNode.requestFocus();
+                                },
+                                onTapOutside: (event) {
+                                  _focusNode.unfocus();
+                                },
+                              ),
+                              actions: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    controller.addRoom(_roomName.text);
+                                    _roomName.clear();
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text("Save"),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
                 child: const Icon(
-                  Icons.house_rounded,
+                  Icons.add_home_outlined,
                   size: 60,
                 ),
-                onPressed: controller.homes.length >= 3 ? null : () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text("Enter New Home Name: "),
-                        content: TextField(
-                          controller: _houseName,
-                          decoration:
-                              const InputDecoration(hintText: 'Home Name'),
-                        ),
-                        actions: [
-                          ElevatedButton(
-                            onPressed: () {
-                              controller.addHouse(_houseName.text);
-                              Navigator.pop(context);
-                            },
-                            child: const Text("Save"),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
               ),
             ),
           ),

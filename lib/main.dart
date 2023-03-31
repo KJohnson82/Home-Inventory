@@ -3,33 +3,33 @@ import 'package:flutter/material.dart';
 // import 'package:firebase_core_web/firebase_core_web_interop.dart';
 // import 'firebase_options.dart';
 // import 'package:firebase_core/firebase_core.dart';
-import 'itemForm.dart';
+import 'Routes/itemForm.dart';
 import 'Theme/colorTheme.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:homeinventory/Routes/Homes.dart';
 import 'package:get/get.dart';
 
 
-class House {
-  int? homeId;
-  String? homeName;
-  List<Room>? rooms;
-
-  House({this.homeId, this.homeName, this.rooms});
-}
-
-List<House> _homes = [];
-
-class Room {
-  int? roomId;
-  String? roomName;
-  List<Item>? items;
-
-  Room({this.roomId, this.roomName, this.items});
-}
-
-List<Room> _rooms = [];
-
+// class Home {
+//   int? homeId;
+//   String? homeName;
+//   List<Room>? rooms;
+//
+//   Home({this.homeId, this.homeName, this.rooms});
+// }
+//
+// List<Home> _homes = [];
+//
+// class Room {
+//   int? roomId;
+//   String? roomName;
+//   List<Item>? items;
+//
+//   Room({this.roomId, this.roomName, this.items});
+// }
+//
+// List<Room> _rooms = [];
+//
 class Item {
   int? itemId;
   String? itemName;
@@ -55,6 +55,8 @@ class Item {
 }
 
 List<Item> _items = [];
+
+
 
 // void main() async {
 //   WidgetsFlutterBinding.ensureInitialized();
