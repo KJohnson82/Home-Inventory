@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:get/get.dart';
+
+import 'RoomItems.dart';
 // import 'Theme/colorTheme.dart';
 
 /*
@@ -45,23 +47,23 @@ class Item {
   });
 }
 
-class ItemController extends GetxController {
-  var highestId = 0.obs;
-  final items = <int, Item>{}.obs;
-
-  void addItem(Item item) {
-    int newId = (highestId.value + 1);
-    items[item.itemId!] = item;
-    highestId.value = newId;
-  }
-}
+// class ItemController extends GetxController {
+//   var highestId = 0.obs;
+//   final items = <int, Item>{}.obs;
+//
+//   void addItem(Item item) {
+//     int newId = (highestId.value + 1);
+//     items[item.itemId!] = item;
+//     highestId.value = newId;
+//   }
+// }
 
 class ItemFormPage extends StatelessWidget {
   const ItemFormPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return MaterialApp(
       theme: ThemeData(
         colorScheme: const ColorScheme.light(),
       ),
@@ -80,8 +82,9 @@ class ItemForm extends StatefulWidget {
 
 class _ItemFormState extends State<ItemForm> {
   final _formKey = GlobalKey<FormState>();
-  final itemController = Get.put(ItemController());
+  // final itemController = Get.put(ItemController());
 
+  RoomItemController get roomItemController => Get.find<RoomItemController>();
   // String? _itemName;
   // String? _itemType;
   // String? _itemSubtype;
@@ -121,7 +124,7 @@ class _ItemFormState extends State<ItemForm> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       final newItem = Item(
-        itemId: itemController.highestId.value,
+        itemId: Get.find<RoomItemController>().highestId.value + 1,
         itemName: _itemNameController.text,
         itemType: _itemTypeController.text,
         itemSubtype: _itemSubtypeController.text,
@@ -131,7 +134,7 @@ class _ItemFormState extends State<ItemForm> {
         itemNotes: _notesController.text,
       );
 
-      itemController.addItem(newItem);
+      // itemController.addItem(newItem);
 
       _itemNameController.clear();
       _itemTypeController.clear();
@@ -143,6 +146,8 @@ class _ItemFormState extends State<ItemForm> {
 
       Get.snackbar('Success', 'Item added successfully',
           snackPosition: SnackPosition.BOTTOM);
+
+      Get.back(result: newItem);
     }
   }
 
@@ -150,10 +155,15 @@ class _ItemFormState extends State<ItemForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Obx(() => Text(itemController.items.isNotEmpty
-            ? '${itemController.items.values.last.itemName}'
+        leading: BackButton(
+          onPressed: () => Get.back(),
+        ),
+        centerTitle: true,
+        title: Obx(() => Text(roomItemController.roomItems.isNotEmpty
+            ? '${roomItemController.roomItems.values.last.itemName}'
             : 'Add New Item')),
       ),
+
       body: Form(
         key: _formKey,
         child: ListView(
@@ -232,7 +242,9 @@ class _ItemFormState extends State<ItemForm> {
               decoration: const InputDecoration(label: Text('Notes: ')),
               onSaved: (value) =>  _notesController.text = value!,
             ),
-            ElevatedButton(onPressed: _submitForm, child: Text('Add'))
+            ElevatedButton(onPressed: () {
+              _submitForm();
+            }, child: Text('Add'))
           ],
         ),
       ),

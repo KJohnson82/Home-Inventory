@@ -20,7 +20,7 @@ class Routes {
 final getPages = [
   GetPage(name: Routes.homePage, page: () => HomesPage()),
   GetPage(name: Routes.roomPage, page: () => RoomsPage()),
-  GetPage(name: Routes.roomItemPage, page: () => RoomItemsPage()),
+  GetPage(name: Routes.roomItemPage, page: () => RoomItemsPage(room: Room(),)),
   GetPage(name: Routes.itemForm, page: () => ItemFormPage()),
   // GetPage(name: Routes.loginPage, page: () => LoginPage()),
 ];

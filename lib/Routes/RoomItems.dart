@@ -137,11 +137,15 @@ import 'Rooms.dart';
 import 'itemForm.dart';
 
 class RoomItem {
-  int? itemId;
-  String? itemName;
-  List<Item>? items;
+  Item? item;
+  // int? itemId;
+  // String? itemName;
+  Map<int, Item>? items;
 
-  RoomItem({this.itemId, this.itemName, this.items});
+  // RoomItem({this.itemId, this.itemName, this.items});
+  RoomItem({this.items});
+
+  String? get itemName => item?.itemName!;
 }
 
 // class Item {
@@ -170,33 +174,35 @@ class RoomItem {
 
 // var room = Get.arguments as Room;
 
-class RoomItemController extends GetxController {
+class RoomItemController extends GetxController with StateMixin<RoomItem>{
   Room? room;
   var highestId = 0.obs;
   var roomItems = <int, RoomItem>{}.obs;
 
-  void addItem(String itemName) {
-    if (roomItems.length < 10) {
+  void addItem(Item item) {
+    if (roomItems.length < 50) {
       int newId = (highestId.value + 1);
-      roomItems[newId] = RoomItem(itemId: newId, itemName: itemName, items: []);
+      roomItems[newId] = RoomItem(items: {});
       highestId.value = newId;
     }
   }
+  RoomItemController({this.room});
 }
 
 class RoomItemsPage extends StatelessWidget {
-  RoomItemsPage({Key? key}) : super(key: key);
+  final Room room;
+
+  RoomItemsPage({Key? key, required this.room}) : super(key: key);
   final TextEditingController _itemName = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
+    Get.put(RoomItemController(room: room));
     return GetBuilder<RoomItemController>(
-      init: RoomItemController(),
+      // init: RoomItemController()..room = room,
       builder: (controller) {
-        return MaterialApp(
-          title: 'Items',
-          home: Scaffold(
+        return Scaffold(
             appBar: AppBar(
               leading: BackButton(
                 onPressed: () => Get.back(result: controller.roomItems),
@@ -221,8 +227,7 @@ class RoomItemsPage extends StatelessWidget {
                       onLongPress: () {
 
                       },
-                      dense: false,
-                      title: Text(roomItem.itemName ?? ''),
+                      title: Text(_itemName.text ?? ''),
                     ),
                   );
                 },
@@ -232,53 +237,59 @@ class RoomItemsPage extends StatelessWidget {
                   () => FloatingActionButton.large(
                 elevation: 4,
                 foregroundColor: Colors.white,
-                onPressed: controller.roomItems.length >= 10
+                    // onPressed: () => Get.to(ItemFormPage()),
+                onPressed: controller.roomItems.length >= 50
                     ? null
-                    : () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text("Enter New Item Name: "),
-                        content: TextField(
-                          controller: _itemName,
-                          decoration: const InputDecoration(
-                              hintText: 'Item Name'),
-                          focusNode: _focusNode,
-                          autofocus: true,
-                          onSubmitted: (value) {
-                            controller.addItem(_itemName.text);
-                            _itemName.clear();
-                            Navigator.pop(context);
-                          },
-                          onTap: () {
-                            _focusNode.requestFocus();
-                          },
-                          onTapOutside: (event) {
-                            _focusNode.unfocus();
-                          },
-                        ),
-                        actions: [
-                          ElevatedButton(
-                            onPressed: () {
-                              controller.addItem(_itemName.text);
-                              _itemName.clear();
-                              Navigator.pop(context);
-                            },
-                            child: const Text("Save"),
-                          ),
-                        ],
-                      );
-                    },
-                  );
+                    : () async {
+                  final Item? newItem = await Get.to(ItemFormPage());
+                  if (newItem != null) {
+                    controller.addItem(newItem);
+                  }
+                  // showDialog(
+                  //   context: context,
+                  //   builder: (context) {
+                  //     return AlertDialog(
+                  //       title: const Text("Enter New Item Name: "),
+                  //       content: TextField(
+                  //         controller: _itemName,
+                  //         decoration: const InputDecoration(
+                  //             hintText: 'Item Name'),
+                  //         focusNode: _focusNode,
+                  //         autofocus: true,
+                  //         onSubmitted: (value) {
+                  //           controller.addItem(_itemName.text);
+                  //           _itemName.clear();
+                  //           Navigator.pop(context);
+                  //         },
+                  //         onTap: () {
+                  //           _focusNode.requestFocus();
+                  //         },
+                  //         onTapOutside: (event) {
+                  //           _focusNode.unfocus();
+                  //         },
+                  //       ),
+                  //       actions: [
+                  //         ElevatedButton(
+                  //           onPressed: () {
+                  //             controller.addItem(_itemName.text);
+                  //             _itemName.clear();
+                  //             Navigator.pop(context);
+                  //           },
+                  //           child: const Text("Save"),
+                  //         ),
+                  //       ],
+                  //     );
+                  //   },
+                  // );
                 },
                 child: const Icon(
                   Icons.add_home_outlined,
                   size: 60,
-                ),
-              ),
+              //   ),
+              // ),
             ),
           ),
+        ),
         );
       },
     );

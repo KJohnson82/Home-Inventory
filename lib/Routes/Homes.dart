@@ -218,7 +218,7 @@ class HomesPage extends StatelessWidget {
                     final home = controller.homes.values.toList()[index];
                     return InkWell(
                       onTap: () {
-                        Get.to(RoomsPage());
+                        Get.to(RoomsPage(), arguments: [home.homeId, home.homeName, home.rooms]);
                         print('This was pressed ${home.homeName}');
                       },
                       child: Padding(

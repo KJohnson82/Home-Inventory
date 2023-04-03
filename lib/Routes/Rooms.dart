@@ -138,6 +138,9 @@ import 'RoomItems.dart';
 import 'itemForm.dart';
 
 
+var home = Get.arguments;
+
+
 class Room {
   int? roomId;
   String? roomName;
@@ -149,11 +152,11 @@ class Room {
 
 
 // var homeId = Home().homeId;
-// var homeName = Get.parameters Home().homeName;
+// var homeName = ;
 // var homeRooms = Home().rooms;
-String? homeName = Get.parameters['homeName'];
-String? homeId = Get.parameters['homeId'];
-// String? homeRooms = Get.parameters[rooms];
+// String? homeName = Get.parameters[homeName];
+// String? homeId = Get.parameters[homeId];
+// String? homeRooms = Get.arguments[home.rooms];
 
 
 class RoomController extends GetxController {
@@ -170,14 +173,14 @@ class RoomController extends GetxController {
 
       Get.find<HomeController>().homes[homeId]!.rooms![newId] = newRoom;
 
-      print('$homeId + $homeName');
+      print('$homeId + ${Home().homeName}');
     }
   }
 
   // RoomController({required this.home});
 }
 
-void main() => runApp(GetMaterialApp(home: RoomsPage()));
+// void main() => runApp(GetMaterialApp(home: RoomsPage()));
 
 class RoomsPage extends StatelessWidget {
   RoomsPage({Key? key}) : super(key: key);
@@ -200,7 +203,7 @@ class RoomsPage extends StatelessWidget {
           title: 'Rooms',
           home: Scaffold(
             appBar: AppBar(
-              title: Text('HOMEVENTORY: ${Get.parameters['homeName']}'),
+              title: Text('HOMEVENTORY: ${Placeholder}'),
               centerTitle: true,
               leading: BackButton(
                 onPressed: () => Get.back(),
@@ -219,7 +222,7 @@ class RoomsPage extends StatelessWidget {
                   final room = controller.rooms.values.toList()[index];
                   return InkWell(
                     onTap: () {
-                      Get.to(() => RoomItemsPage());
+                      Get.to(() => RoomItemsPage(room: room,));
                       print('This was pressed ${room.roomName}');
                     },
                     child: Padding(
