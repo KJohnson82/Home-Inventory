@@ -14,7 +14,7 @@ class Routes {
   static String roomPage = '/Rooms';
   static String roomItemPage = '/RoomItems';
   static String itemForm = '/ItemForm';
-  static String loginPage = '/Login';
+  // static String loginPage = '/Login';
 }
 
 final getPages = [

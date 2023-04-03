@@ -1,8 +1,10 @@
-// import 'dart:html';
+
 import 'package:flutter/material.dart';
 // import 'package:firebase_core_web/firebase_core_web_interop.dart';
 // import 'firebase_options.dart';
 // import 'package:firebase_core/firebase_core.dart';
+import 'Routes/RoomItems.dart';
+import 'Routes/Rooms.dart';
 import 'Routes/itemForm.dart';
 import 'Theme/colorTheme.dart';
 import 'package:dynamic_color/dynamic_color.dart';
@@ -10,51 +12,32 @@ import 'package:homeinventory/Routes/Homes.dart';
 import 'package:get/get.dart';
 
 
-// class Home {
-//   int? homeId;
-//   String? homeName;
-//   List<Room>? rooms;
-//
-//   Home({this.homeId, this.homeName, this.rooms});
-// }
-//
-// List<Home> _homes = [];
-//
-// class Room {
-//   int? roomId;
-//   String? roomName;
-//   List<Item>? items;
-//
-//   Room({this.roomId, this.roomName, this.items});
-// }
-//
-// List<Room> _rooms = [];
-//
-class Item {
-  int? itemId;
-  String? itemName;
-  String? itemType;
-  String? itemSubtype;
-  String? itemBrand;
-  String? itemModel;
-  String? itemDimensions;
-  String? itemNotes;
-  // File? itemImage;
 
-  Item({
-    required this.itemId,
-    required this.itemName,
-    required this.itemType,
-    this.itemSubtype,
-    this.itemBrand,
-    this.itemModel,
-    required this.itemDimensions,
-    this.itemNotes,
-    // this.itemImage,
-  });
-}
+// class Item {
+//   int? itemId;
+//   String? itemName;
+//   String? itemType;
+//   String? itemSubtype;
+//   String? itemBrand;
+//   String? itemModel;
+//   String? itemDimensions;
+//   String? itemNotes;
+//   // File? itemImage;
+//
+//   Item({
+//     required this.itemId,
+//     required this.itemName,
+//     required this.itemType,
+//     this.itemSubtype,
+//     this.itemBrand,
+//     this.itemModel,
+//     required this.itemDimensions,
+//     this.itemNotes,
+//     // this.itemImage,
+//   });
+// }
 
-List<Item> _items = [];
+// List<Item> _items = [];
 
 
 
@@ -133,3 +116,37 @@ List<Item> _items = [];
 //     );
 //   }
 // }
+
+// Home home = Get.arguments as Home;
+// Room room = Get.arguments as Room;
+// Item item = Get.arguments as Item;
+
+void main() => runApp(GetMaterialApp(
+  initialBinding: BindingsBuilder(() {
+    Get.put(HomeController());
+    Get.put(RoomController());
+    Get.put(RoomItemController());
+    // Get.put(ItemFormController());
+    // Get.put(LoginController());
+
+
+  }),
+  defaultTransition: Transition.rightToLeft,
+  transitionDuration: Duration(milliseconds: 200),
+  home: HomesPage(),
+));
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      title: 'Material App',
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Material App Bar'),
+        ),
+        body: HomesPage(),
+      ),
+    );
+  }
+}

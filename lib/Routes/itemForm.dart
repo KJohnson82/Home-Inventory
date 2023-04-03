@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // import 'firebase_options.dart';
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:dynamic_color/dynamic_color.dart';
+import 'package:get/get.dart';
 // import 'Theme/colorTheme.dart';
 
 
@@ -21,7 +22,40 @@ Figure out how to add a form in a flutter bottom sheet
 
  */
 
-void main() => runApp(ItemFormPage());
+
+class Item {
+  int? itemId;
+  String? itemName;
+  String? itemType;
+  String? itemSubtype;
+  String? itemBrand;
+  String? itemModel;
+  String? itemDimensions;
+  String? itemNotes;
+  // File? itemImage;
+
+  Item({
+    required this.itemId,
+    required this.itemName,
+    required this.itemType,
+    this.itemSubtype,
+    this.itemBrand,
+    this.itemModel,
+    required this.itemDimensions,
+    this.itemNotes,
+    // this.itemImage,
+  });
+}
+
+class ItemController extends GetxController {
+  final items = <int, Item>{}.obs;
+
+  void addItem(Item item) {
+
+  }
+
+}
+
 
 class ItemFormPage extends StatelessWidget {
   const ItemFormPage({Key? key}) : super(key: key);
@@ -39,27 +73,6 @@ class ItemFormPage extends StatelessWidget {
   }
 }
 
-
-// void main() => runApp(ItemForm());
-
-// class ItemForm extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Material App',
-//       home: Scaffold(
-//         appBar: AppBar(
-//           title: Text('Material App Bar'),
-//         ),
-//         body: Center(
-//           child: Container(
-//             child: Text('Hello World'),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 class ItemForm extends StatefulWidget {
   const ItemForm({Key? key}) : super(key: key);
