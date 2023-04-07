@@ -5,24 +5,10 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-// import 'Routes/RoomItems.dart';
-// import 'Routes/Rooms.dart';
-// import 'Routes/itemForm.dart';
-// import 'Theme/colorTheme.dart';
-// import 'package:dynamic_color/dynamic_color.dart';
-// import 'package:homeinventory/Routes/Homes.dart';
-
 import 'RoomItems.dart';
 import 'Rooms.dart';
 
-// await Firebase.initializeApp(
-//
-// options: DefaultFirebaseOptions.currentPlatform,
-//
-// );
-
-FirebaseDatabase database = FirebaseDatabase.instance;
-DatabaseReference ref = FirebaseDatabase.instance.ref();
+var homes = <int, Home>{};
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +16,10 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  FirebaseDatabase database = FirebaseDatabase.instance;
+  DatabaseReference ref = FirebaseDatabase.instance.ref();
 
+  // DatabaseReference homesRef = FirebaseDatabase.instance.ref('homes');
 
   runApp(
     MaterialApp(

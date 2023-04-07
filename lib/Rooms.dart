@@ -1,13 +1,14 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:hvtest1/Homes.dart';
+import 'package:hvtest1/main.dart';
 import 'ItemsForm.dart';
 import 'RoomItems.dart';
 
 class Room {
   int? roomId;
   String? roomDesc;
-  List<Item>? items;
+  Map<Object, Item>? items;
 
   Room({this.roomId, this.roomDesc, this.items});
 }
@@ -15,6 +16,7 @@ class Room {
 // final parentHome = ModalRoute.of(context)!.settings.arguments;
 
 class RoomController {
+  DatabaseReference roomsRef = FirebaseDatabase.instance.ref('homes').child('rooms');
   var highestId = 0;
   var rooms = <Room>[];
 
@@ -22,17 +24,36 @@ class RoomController {
 
     if (rooms.length < 10) {
       int newId = (highestId + 1);
-      rooms.add(Room(roomId: newId, roomDesc: roomName, items: []));
+      rooms.add(Room(roomId: newId, roomDesc: roomName, items: {}));
       highestId = newId;
-      FirebaseDatabase.instance.ref().child(homeName).push().set({
+      FirebaseDatabase.instance.ref().child('homes').child(homeName).child('rooms').push().set({
         'roomId': rooms.last.roomId,
         'roomName': rooms.last.roomDesc,
         'roomItems': rooms.last.items,
       });
+      print(rooms.last.roomId);
+      print(rooms.last.roomDesc);
+      print(rooms.last.items);
     }
   }
 
+  Future<void> getRooms(String homeName) async {
+    DatabaseReference roomRef = FirebaseDatabase.instance.ref('homes/homeName/rooms');
+    DataSnapshot snapshot = await roomRef.get();
+    if (snapshot.value != null) {
+      Map<dynamic, dynamic> data = snapshot.value as Map<dynamic, dynamic>;
+      rooms.clear();
+      for (var key in data.keys) {
+        Map<dynamic, dynamic> roomData = data[key] as Map<dynamic, dynamic>;
+        int roomId = roomData['roomId'];
+        String roomDesc = roomData['roomDesc'];
+        // You can modify this to retrieve items if needed
+        Map<Object, Item>? items = {};
 
+        rooms.add(Room(roomId: roomId, roomDesc: roomDesc, items: items));
+      }
+    }
+  }
 }
 
 // void main() => runApp(RoomsPage());
@@ -48,6 +69,14 @@ class RoomsPage extends StatefulWidget {
 class _RoomsPageState extends State<RoomsPage> {
   final TextEditingController _roomName = TextEditingController();
   final RoomController controller = RoomController();
+
+  @override
+  void initState() {
+    super.initState();
+    controller.getRooms(widget.homeName).then((_) {
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

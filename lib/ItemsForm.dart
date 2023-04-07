@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:hvtest1/RoomItems.dart';
@@ -57,7 +59,7 @@ class Item {
 }
 
 class ItemController {
-  final items = <Item>[];
+  final items = <Item>{};
 
   int get highestId => items.isNotEmpty ? items.last.itemId! : 0;
 
@@ -196,7 +198,16 @@ class _ItemFormPageState extends State<ItemFormPage> {
               ),
               ElevatedButton(
                 child: const Text('Submit'),
-                onPressed: () async => _submitForm(context),
+                onPressed: () async => [
+                  _submitForm(context),
+                  print(_itemNameController.text),
+                  print(_itemTypeController.text),
+                  print(_itemSubtypeController.text),
+                  print(_itemBrandController.text),
+                  print(_itemModelController.text),
+                  print(_itemDimensionsController.text),
+                  print(_itemColorController.text),
+                ],
 
               ),
             ],
