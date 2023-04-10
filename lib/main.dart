@@ -1,76 +1,46 @@
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:flutter/material.dart';
-// import 'Homes.dart';
-// import 'package:firebase_database/firebase_database.dart';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'firebase_options.dart';
-//
-// import 'RoomItems.dart';
-// import 'Rooms.dart';
-//
-// var homes = <int, Home>{};
-//
-// Future<void> main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   await Firebase.initializeApp(
-//     options: DefaultFirebaseOptions.currentPlatform,
-//   );
-//
-//   FirebaseDatabase database = FirebaseDatabase.instance;
-//   DatabaseReference ref = FirebaseDatabase.instance.ref();
-//
-//   // DatabaseReference homesRef = FirebaseDatabase.instance.ref('homes');
-//
-//   runApp(
-//     MaterialApp(
-//       title: 'Material App',
-//       home: Scaffold(
-//         appBar: AppBar(
-//           title: Text('HOMEVENTORY'),
-//           centerTitle: true,
-//         ),
-//         body: HomesPage(),
-//       ),
-//     ),
-//   );
-// }
-//
-// // class MyApp extends StatelessWidget {
-// //   @override
-// //   Widget build(BuildContext context) {
-// //     return MaterialApp(
-// //       title: 'HOMEVENTORY',
-// //       home: Scaffold(
-// //         appBar: AppBar(
-// //           title: Text('HOMEVENTORY'),
-// //         ),
-// //         body: HomesPage(),
-// //       ),
-// //     );
-// //   }
-// // }
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'Homes.dart';
+import 'Routes/Homes.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 
 // var homes = <int, Home>{};
 FirebaseFirestore db = FirebaseFirestore.instance;
 
+final ThemeData appTheme = ThemeData(
+    colorScheme: ColorScheme(
+      brightness: Brightness.dark,
+      primary: const Color(0xFF344955),
+      onPrimary: Colors.white,
+      // secondary: Colors.cyan.shade700,
+      secondary: Color(0xFFF9AA33),
+      onSecondary: Colors.black,
+      tertiary: Colors.cyan.shade700,
+      // tertiary: Color(0xFFF9AA33),
+      onTertiary: Colors.black,
+      error: Colors.redAccent,
+      onError: Colors.black,
+      background: Colors.white,
+      // background: Color(0xFF344955),
+      onBackground: Colors.white,
+      surface: Color(0xFFF9AA33),
+      onSurface: Color(0xFF232323),
+    ),
+    textTheme: GoogleFonts.rubikTextTheme(),
+);
+
+
+
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    // options: DefaultFirebaseOptions.currentPlatform,
-  );
-
-  // FirebaseFirestore firestore = FirebaseFirestore.instance;
-  // FirebaseFirestore db = FirebaseFirestore.instance;
-  // CollectionReference homesRef = FirebaseFirestore.instance.collection('homes');
+  await Firebase.initializeApp();
 
   runApp(
     MaterialApp(
-      title: 'Material App',
+      title: 'HOMVENTORY',
+      // theme: appTheme,
       home: Scaffold(
         appBar: AppBar(
           title: const Text('HOMEVENTORY'),

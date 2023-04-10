@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'Rooms.dart';
-import 'main.dart';
+import '../main.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 
 class Home {
@@ -68,12 +69,33 @@ class _HomesPageState extends State<HomesPage> {
                         ),
                       ));
                 },
+                onLongPress: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text('Delete ${homes[index]["homeName"]}?'),
+                          actions: <Widget>[
+                            TextButton(
+                              child: const Text('Confirm'),
+                              onPressed: () {
+                                String documentId = homes[index].id;
+                                db.collection('homes').doc(documentId).delete();
+                                _homeNameController.clear();
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      });
+                },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: Colors.amber,
+                      // color: appTheme.colorScheme.surface,
+                      color: Colors.blue,
                       borderRadius: BorderRadius.circular(15),
                       boxShadow: const [
                         BoxShadow(
@@ -84,16 +106,18 @@ class _HomesPageState extends State<HomesPage> {
                       ],
                       shape: BoxShape.rectangle,
                     ),
-                    child: Text(homes[index]['homeName']),
+                    child: Text(homes[index]['homeName'], style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),),
                   ),
                 ),
+
               );
             },
           );
         },
       ),
+
       floatingActionButton: FloatingActionButton(
-        elevation: 2,
+        // elevation: 3,
         onPressed: () {
           showDialog(
             context: context,
@@ -136,5 +160,6 @@ class _HomesPageState extends State<HomesPage> {
         child: const Icon(Icons.add_home_outlined),
       ),
     );
+
   }
 }
