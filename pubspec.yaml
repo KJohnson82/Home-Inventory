@@ -42,6 +42,7 @@ dependencies:
   google_fonts: ^4.0.3
   dynamic_color: ^1.6.3
   path_provider: ^2.0.14
+  flex_color_scheme: ^7.0.1
 
 dev_dependencies:
   flutter_test:

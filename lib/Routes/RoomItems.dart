@@ -30,7 +30,7 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _itemNameController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
-
+  int? _expandedIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -49,10 +49,7 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
           }
-
           final items = snapshot.data!.docs;
-
-
 
           return ListView.builder(
             itemCount: items.length,
@@ -61,8 +58,10 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
               return GestureDetector(
                 child: Card(
                   color: Colors.blue,
-                  margin: EdgeInsets.fromLTRB(5, 3, 5, 2),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15), side: BorderSide(color: Colors.blueGrey)),
+                  margin: EdgeInsets.fromLTRB(3, 3, 3, 1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      side: BorderSide(color: Colors.blueGrey)),
                   elevation: 3,
                   child: ExpansionTile(
                     tilePadding: EdgeInsets.fromLTRB(20, 4, 20, 4),
@@ -70,9 +69,9 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
                     // collapsedBackgroundColor: Colors.blue,
                     collapsedTextColor: Colors.white,
                     backgroundColor: Colors.white,
-
                     initiallyExpanded: false,
-                    title: Text(item['itemName'] ?? 'No Name'),
+                    trailing: Icon(Icons.keyboard_arrow_down, color: Colors.white,),
+                    title: Text(item['itemName'] ?? 'No Name', style: TextStyle(fontWeight: FontWeight.bold),),
                     children: [
                       ListTile(
                         title: Text('Type: ${item['itemType'] ?? 'N/A'}'),
@@ -87,7 +86,8 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
                         title: Text('Model: ${item['itemModel'] ?? 'N/A'}'),
                       ),
                       ListTile(
-                        title: Text('Dimensions: ${item['itemDimensions'] ?? 'N/A'}'),
+                        title: Text(
+                            'Dimensions: ${item['itemDimensions'] ?? 'N/A'}'),
                       ),
                       ListTile(
                         title: Text('Color: ${item['itemColor'] ?? 'N/A'}'),
@@ -142,7 +142,6 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
     );
   }
 }
-
 
 // deleteItem(item) {
 //   showDialog(

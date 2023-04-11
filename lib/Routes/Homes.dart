@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'Rooms.dart';
 import '../main.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 
 
 class Home {
@@ -51,7 +52,7 @@ class _HomesPageState extends State<HomesPage> {
 
           return GridView.builder(
             scrollDirection: Axis.vertical,
-            padding: const EdgeInsets.fromLTRB(100, 50, 100, 50),
+            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
             itemCount: homes.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 1,
@@ -90,23 +91,26 @@ class _HomesPageState extends State<HomesPage> {
                       });
                 },
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      // color: appTheme.colorScheme.surface,
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: const [
-                        BoxShadow(
-                            color: Colors.black12,
-                            spreadRadius: 1,
-                            blurRadius: 10,
-                            offset: Offset(2, 6))
-                      ],
-                      shape: BoxShape.rectangle,
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  child: Card(
+                    child: Container(
+                      alignment: Alignment.center,
+                      // decoration: BoxDecoration(
+                      //   color: appTheme.colorScheme.surface,
+                      //   color: Colors.blue,
+                      //   borderRadius: BorderRadius.circular(15),
+                      //   boxShadow: const [
+                      //     BoxShadow(
+                      //         color: Colors.black12,
+                      //         spreadRadius: 1,
+                      //         blurRadius: 10,
+                      //         offset: Offset(2, 6))
+                      //   ],
+                      //   shape: BoxShape.rectangle,
+                      // ),
+                      // child: Text(homes[index]['homeName'], style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),),
+                      child: Text(homes[index]['homeName'],),
                     ),
-                    child: Text(homes[index]['homeName'], style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),),
                   ),
                 ),
 
