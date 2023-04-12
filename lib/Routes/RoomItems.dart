@@ -57,20 +57,21 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
               final item = items[index].data() as Map<String, dynamic>;
               return GestureDetector(
                 child: Card(
-                  color: Colors.blue,
+                  // color: Colors.blue,
                   margin: EdgeInsets.fromLTRB(3, 3, 3, 1),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
-                      side: BorderSide(color: Colors.blueGrey)),
+                      // side: BorderSide(color: Colors.blueGrey),
+                  ),
                   elevation: 3,
                   child: ExpansionTile(
                     tilePadding: EdgeInsets.fromLTRB(20, 4, 20, 4),
-                    textColor: Colors.white,
+                    // textColor: Colors.white,
                     // collapsedBackgroundColor: Colors.blue,
-                    collapsedTextColor: Colors.white,
-                    backgroundColor: Colors.white,
+                    // collapsedTextColor: Colors.white,
+                    // backgroundColor: Colors.white,
                     initiallyExpanded: false,
-                    trailing: Icon(Icons.keyboard_arrow_down, color: Colors.white,),
+                    // trailing: Icon(Icons.keyboard_arrow_down, color: Colors.white,),
                     title: Text(item['itemName'] ?? 'No Name', style: TextStyle(fontWeight: FontWeight.bold),),
                     children: [
                       ListTile(

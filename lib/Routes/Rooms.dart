@@ -70,12 +70,12 @@ class _RoomsPageState extends State<RoomsPage> {
           final rooms = snapshot.data!.docs;
 
           return GridView.builder(
-            padding: EdgeInsets.all(60),
+            padding: EdgeInsets.fromLTRB(20, 60, 20, 60),
             itemCount: rooms.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              mainAxisSpacing: 20,
-              crossAxisSpacing: 20,
+              // mainAxisSpacing: 20,
+              // crossAxisSpacing: 20,
             ),
             itemBuilder: (context, index) {
               return InkWell(
@@ -114,22 +114,25 @@ class _RoomsPageState extends State<RoomsPage> {
                         );
                       });
                 },
-                child: Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    // color: appTheme.colorScheme.surface,
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: const [
-                      BoxShadow(
-                          color: Colors.black12,
-                          spreadRadius: 1,
-                          blurRadius: 10,
-                          offset: Offset(2, 6))
-                    ],
-                    shape: BoxShape.rectangle,
+                child: Card(
+                  child: Container(
+                    alignment: Alignment.center,
+                    // decoration: BoxDecoration(
+                    //   // color: appTheme.colorScheme.surface,
+                    //   // color: Colors.blue,
+                    //   borderRadius: BorderRadius.circular(15),
+                    //   boxShadow: const [
+                    //     BoxShadow(
+                    //         color: Colors.black12,
+                    //         spreadRadius: 1,
+                    //         blurRadius: 10,
+                    //         offset: Offset(2, 6))
+                    //   ],
+                    //   shape: BoxShape.rectangle,
+                    // ),
+                    // child: Text(rooms[index]['roomName'],style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),),
+                    child: Text(rooms[index]['roomName'],style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18,),),
                   ),
-                  child: Text(rooms[index]['roomName'],style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),),
                 ),
               );
             },
