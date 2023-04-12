@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hvtest1/theme.dart';
 import 'Routes/Homes.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'theme.dart';
 
 // var homes = <int, Home>{};
 FirebaseFirestore db = FirebaseFirestore.instance;
@@ -46,8 +48,10 @@ Future<void> main() async {
 
   runApp(
     MaterialApp(
-      theme: FlexThemeData.dark(scheme: FlexScheme.tealM3),
-      darkTheme: FlexThemeData.light(scheme: FlexScheme.tealM3),
+      theme: FlexThemeData.light(
+        // colors: homeventory,
+      ),
+      darkTheme: FlexThemeData.dark(scheme: FlexScheme.tealM3),
       title: 'HOMVENTORY',
       // theme: appTheme,
       home: Scaffold(
