@@ -35,7 +35,9 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       appBar: AppBar(
+        backgroundColor: flexSchemeDark.primaryContainer,
         centerTitle: true,
         title: const Text('Room Items'),
       ),

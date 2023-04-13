@@ -52,7 +52,9 @@ class _RoomsPageState extends State<RoomsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       appBar: AppBar(
+        backgroundColor: flexSchemeDark.primaryContainer,
         title: Text('HOMEVENTORY: ${widget.homeName}'),
         centerTitle: true,
       ),
