@@ -5,7 +5,6 @@ import '../main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 
-
 class Home {
   String? homeName;
   Map<Object, Room>? rooms;
@@ -35,6 +34,16 @@ class _HomesPageState extends State<HomesPage> {
       });
       _homeNameController.clear();
       Navigator.of(context).pop();
+    }
+  }
+
+  void _editHome(String documentId, String newName) async {
+    if (_formKey.currentState!.validate()) {
+      await _homes.doc(documentId).update({
+        'homeName': newName,
+      });
+      _homeNameController.clear();
+      // Navigator.of(context).pop();
     }
   }
 
@@ -74,24 +83,51 @@ class _HomesPageState extends State<HomesPage> {
                   showDialog(
                       context: context,
                       builder: (context) {
-                        return AlertDialog(
-                          title: Text('Delete ${homes[index]["homeName"]}?'),
-                          actions: <Widget>[
-                            TextButton(
-                              child: const Text('Confirm'),
-                              onPressed: () {
-                                String documentId = homes[index].id;
-                                db.collection('homes').doc(documentId).delete();
-                                _homeNameController.clear();
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
+                        return StatefulBuilder(
+                          builder: (BuildContext context, StateSetter setState) {
+                            return AlertDialog(
+                              title: Text('Edit or Delete ${homes[index]["homeName"]}?'),
+                              content: Form(
+                                key: _formKey,
+                                child: TextFormField(
+                                  controller: _homeNameController,
+                                  decoration: InputDecoration(labelText: 'Edit: Home Name'),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter a name';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: const Text('Confirm'),
+                                  onPressed: () {
+                                    String documentId = homes[index].id;
+                                    _editHome(documentId, _homeNameController.text);
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  child: const Text('Delete'),
+                                  onPressed: () {
+                                    String documentId = homes[index].id;
+                                    db.collection('homes').doc(documentId).delete();
+                                    _homeNameController.clear();
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
                         );
                       });
                 },
+
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                   child: Card(
                     child: Container(
                       alignment: Alignment.center,
@@ -109,17 +145,17 @@ class _HomesPageState extends State<HomesPage> {
                       //   shape: BoxShape.rectangle,
                       // ),
                       // child: Text(homes[index]['homeName'], style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),),
-                      child: Text(homes[index]['homeName'],),
+                      child: Text(
+                        homes[index]['homeName'],
+                      ),
                     ),
                   ),
                 ),
-
               );
             },
           );
         },
       ),
-
       floatingActionButton: FloatingActionButton(
         // elevation: 3,
         onPressed: () {
@@ -164,6 +200,5 @@ class _HomesPageState extends State<HomesPage> {
         child: const Icon(Icons.add_home_outlined),
       ),
     );
-
   }
 }
