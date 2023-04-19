@@ -33,20 +33,23 @@ class _RoomsPageState extends State<RoomsPage> {
       await db.collection('homes').doc(widget.homeId).collection('rooms').add({
         'roomName': _roomNameController.text,
       });
-      // .collection('homes')
-      // .doc(widget.homeId)
-      // .collection('rooms')
-      // .add({
-      // 'roomName': _roomNameController.text,
       _roomNameController.clear();
       Navigator.of(context).pop();
     }
+  }
 
-    // @override
-    // Widget build(BuildContext context) {
-    //   // TODO: implement build
-    //   throw UnimplementedError();
-    // }
+  void _editRoom(String documentId, String newName) async {
+    if (_formKey.currentState!.validate()) {
+      await db
+          .collection('homes')
+          .doc(widget.homeId)
+          .collection('rooms')
+          .doc(documentId)
+          .update({
+        'roomName': newName,
+      });
+      _roomNameController.clear();
+    }
   }
 
   @override
@@ -93,25 +96,53 @@ class _RoomsPageState extends State<RoomsPage> {
                   showDialog(
                       context: context,
                       builder: (context) {
-                        return AlertDialog(
-                          title: Text('Delete ${rooms[index]["roomName"]}?'),
-                          actions: <Widget>[
-                            TextButton(
-                              child: const Text('Confirm'),
-                              onPressed: () {
-                                String documentId = rooms[index].id;
-                                db
-                                    .collection('homes')
-                                    .doc(widget.homeId)
-                                    .collection('rooms')
-                                    .doc(documentId)
-                                    .delete();
-                                _roomNameController.clear();
-                                Navigator.of(context).pop();
-                              },
+                        return StatefulBuilder(builder:
+                            (BuildContext context, StateSetter setState) {
+                          return AlertDialog(
+                            title: Text(
+                                'Edit or Delete ${rooms[index]["roomName"]}?'),
+                            content: Form(
+                              key: _formKey,
+                              child: TextFormField(
+                                controller: _roomNameController,
+                                decoration: InputDecoration(
+                                    labelText: 'Edit: Room Name'),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter a new name: ';
+                                  }
+                                  return null;
+                                },
+                              ),
                             ),
-                          ],
-                        );
+                            actions: <Widget>[
+                              TextButton(
+                                child: const Text('Confirm'),
+                                onPressed: () {
+                                  String documentId = rooms[index].id;
+                                  _editRoom(
+                                      documentId, _roomNameController.text);
+                                  Navigator.of(context).pop();
+                                  setState(() {});
+                                },
+                              ),
+                              TextButton(
+                                child: const Text('Delete'),
+                                onPressed: () {
+                                  String documentId = rooms[index].id;
+                                  db
+                                      .collection('homes')
+                                      .doc(widget.homeId)
+                                      .collection('rooms')
+                                      .doc(documentId)
+                                      .delete();
+                                  _roomNameController.clear();
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        });
                       });
                 },
                 child: Card(
@@ -131,7 +162,13 @@ class _RoomsPageState extends State<RoomsPage> {
                     //   shape: BoxShape.rectangle,
                     // ),
                     // child: Text(rooms[index]['roomName'],style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),),
-                    child: Text(rooms[index]['roomName'],style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18,),),
+                    child: Text(
+                      rooms[index]['roomName'],
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
                   ),
                 ),
               );

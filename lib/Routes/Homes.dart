@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import '../theme.dart';
 import 'Rooms.dart';
 import '../main.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -30,7 +31,7 @@ class _HomesPageState extends State<HomesPage> {
   void _addHome() async {
     if (_formKey.currentState!.validate()) {
       await _homes.add({
-        'homeName': _homeNameController.text,
+        'homeName': _homeNameController.text.toUpperCase(),
       });
       _homeNameController.clear();
       Navigator.of(context).pop();
@@ -40,9 +41,10 @@ class _HomesPageState extends State<HomesPage> {
   void _editHome(String documentId, String newName) async {
     if (_formKey.currentState!.validate()) {
       await _homes.doc(documentId).update({
-        'homeName': newName,
+        'homeName': newName.toUpperCase(),
       });
       _homeNameController.clear();
+      setState(() {});
       // Navigator.of(context).pop();
     }
   }
@@ -50,6 +52,66 @@ class _HomesPageState extends State<HomesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        padding: EdgeInsets.fromLTRB(5, 10, 10, 10),
+        color: homeventory.primary,
+        surfaceTintColor: homeventory.primary,
+        elevation: 3,
+        notchMargin: 8,
+        shape: const AutomaticNotchedShape(
+          ContinuousRectangleBorder(
+              // borderRadius: BorderRadius.all(
+              //   Radius.circular(1),
+              // )),
+              ),
+          StadiumBorder(),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            // Icon(Icons.home_filled, size: 40,),
+            SizedBox(
+              height: 60,
+              width: 50,
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.home_work,
+                    size: 40,
+                    color: homeventory.secondary,
+                    semanticLabel: "Rooms",
+                  ),
+                  Text('Rooms', style: TextStyle(
+                    color: homeventory.secondary,
+                    fontSize: 15
+                  ),),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 60,
+              width: 50,
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.list_alt,
+                    size: 40,
+                    color: homeventory.secondary,
+                    semanticLabel: "Items",
+                  ),
+                  Text('Items', style: TextStyle(
+                      color: homeventory.secondary,
+                      fontSize: 15
+                  ),),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
       body: StreamBuilder<QuerySnapshot>(
         stream: _homes.snapshots(),
         builder: (context, snapshot) {
@@ -84,14 +146,17 @@ class _HomesPageState extends State<HomesPage> {
                       context: context,
                       builder: (context) {
                         return StatefulBuilder(
-                          builder: (BuildContext context, StateSetter setState) {
+                          builder:
+                              (BuildContext context, StateSetter setState) {
                             return AlertDialog(
-                              title: Text('Edit or Delete ${homes[index]["homeName"]}?'),
+                              title: Text(
+                                  'Edit or Delete ${homes[index]["homeName"]}?'),
                               content: Form(
                                 key: _formKey,
                                 child: TextFormField(
                                   controller: _homeNameController,
-                                  decoration: InputDecoration(labelText: 'Edit: Home Name'),
+                                  decoration: InputDecoration(
+                                      labelText: 'Edit: Home Name'),
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return 'Please enter a name';
@@ -105,7 +170,8 @@ class _HomesPageState extends State<HomesPage> {
                                   child: const Text('Confirm'),
                                   onPressed: () {
                                     String documentId = homes[index].id;
-                                    _editHome(documentId, _homeNameController.text);
+                                    _editHome(
+                                        documentId, _homeNameController.text);
                                     Navigator.of(context).pop();
                                   },
                                 ),
@@ -113,7 +179,10 @@ class _HomesPageState extends State<HomesPage> {
                                   child: const Text('Delete'),
                                   onPressed: () {
                                     String documentId = homes[index].id;
-                                    db.collection('homes').doc(documentId).delete();
+                                    db
+                                        .collection('homes')
+                                        .doc(documentId)
+                                        .delete();
                                     _homeNameController.clear();
                                     Navigator.of(context).pop();
                                   },
@@ -124,29 +193,35 @@ class _HomesPageState extends State<HomesPage> {
                         );
                       });
                 },
-
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                   child: Card(
+                    color: Colors.transparent,
+                    shadowColor: Colors.transparent,
                     child: Container(
+                      // color: homeventory.secondary,
                       alignment: Alignment.center,
-                      // decoration: BoxDecoration(
-                      //   color: appTheme.colorScheme.surface,
-                      //   color: Colors.blue,
-                      //   borderRadius: BorderRadius.circular(15),
-                      //   boxShadow: const [
-                      //     BoxShadow(
-                      //         color: Colors.black12,
-                      //         spreadRadius: 1,
-                      //         blurRadius: 10,
-                      //         offset: Offset(2, 6))
-                      //   ],
-                      //   shape: BoxShape.rectangle,
-                      // ),
-                      // child: Text(homes[index]['homeName'], style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),),
+                      decoration: BoxDecoration(
+                        color: homeventory.secondary,
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: const [
+                          BoxShadow(
+                              color: Colors.black12,
+                              spreadRadius: 1,
+                              blurRadius: 10,
+                              offset: Offset(2, 6))
+                        ],
+                        shape: BoxShape.rectangle,
+                      ),
                       child: Text(
                         homes[index]['homeName'],
+                        style: TextStyle(
+                          color: homeventory.onPrimaryContainer,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "GoogleFonts.poppins()",
+                        ),
                       ),
                     ),
                   ),
