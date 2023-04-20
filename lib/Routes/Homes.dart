@@ -84,10 +84,11 @@ class _HomesPageState extends State<HomesPage> {
                     color: homeventory.secondary,
                     semanticLabel: "Rooms",
                   ),
-                  Text('Rooms', style: TextStyle(
-                    color: homeventory.secondary,
-                    fontSize: 15
-                  ),),
+                  Text(
+                    'Rooms',
+                    style:
+                        TextStyle(color: homeventory.secondary, fontSize: 15),
+                  ),
                 ],
               ),
             ),
@@ -102,10 +103,11 @@ class _HomesPageState extends State<HomesPage> {
                     color: homeventory.secondary,
                     semanticLabel: "Items",
                   ),
-                  Text('Items', style: TextStyle(
-                      color: homeventory.secondary,
-                      fontSize: 15
-                  ),),
+                  Text(
+                    'Items',
+                    style:
+                        TextStyle(color: homeventory.secondary, fontSize: 15),
+                  ),
                 ],
               ),
             ),
