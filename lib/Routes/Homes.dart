@@ -35,6 +35,7 @@ class _HomesPageState extends State<HomesPage> {
       });
       _homeNameController.clear();
       Navigator.of(context).pop();
+      setState(() {});
     }
   }
 
@@ -68,46 +69,49 @@ class _HomesPageState extends State<HomesPage> {
           StadiumBorder(),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             // Icon(Icons.home_filled, size: 40,),
-            SizedBox(
-              height: 60,
-              width: 50,
-              child: Column(
-                children: [
-                  Icon(
-                    Icons.home_work,
-                    size: 40,
-                    color: homeventory.secondary,
-                    semanticLabel: "Rooms",
-                  ),
-                  Text(
-                    'Rooms',
-                    style:
-                        TextStyle(color: homeventory.secondary, fontSize: 15),
-                  ),
-                ],
+            Padding(
+              padding: const EdgeInsets.fromLTRB(5, 0, 100, 0),
+              child: SizedBox(
+                height: 40,
+                width: 60,
+                child: Column(
+                  children: [
+                    // Icon(
+                    //   Icons.home_work,
+                    //   size: 40,
+                    //   color: homeventory.secondary,
+                    //   semanticLabel: "Rooms",
+                    // ),
+                    // Text(
+                    //   'Rooms',
+                    //   style:
+                    //       TextStyle(color: homeventory.secondary, fontSize: 15),
+                    // ),
+                  ],
+                ),
               ),
             ),
             SizedBox(
-              height: 60,
-              width: 50,
+              height: 40,
+              width: 60,
               child: Column(
                 children: [
-                  Icon(
-                    Icons.list_alt,
-                    size: 40,
-                    color: homeventory.secondary,
-                    semanticLabel: "Items",
-                  ),
-                  Text(
-                    'Items',
-                    style:
-                        TextStyle(color: homeventory.secondary, fontSize: 15),
-                  ),
+                  // Icon(
+                  //   Icons.list_alt,
+                  //   size: 40,
+                  //   color: homeventory.secondary,
+                  //   semanticLabel: "Items",
+                  // ),
+                  // Text(
+                  //   'Items',
+                  //   style:
+                  //       TextStyle(color: homeventory.secondary, fontSize: 15),
+                  // ),
                 ],
               ),
             ),
@@ -120,9 +124,7 @@ class _HomesPageState extends State<HomesPage> {
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
           }
-
           final homes = snapshot.data!.docs;
-
           return GridView.builder(
             scrollDirection: Axis.vertical,
             padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 50),
@@ -197,11 +199,13 @@ class _HomesPageState extends State<HomesPage> {
                 },
                 child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
                   child: Card(
                     color: Colors.transparent,
                     shadowColor: Colors.transparent,
                     child: Container(
+                      height: 50,
+                      width: 50,
                       // color: homeventory.secondary,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
@@ -233,7 +237,7 @@ class _HomesPageState extends State<HomesPage> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.large(
         // elevation: 3,
         onPressed: () {
           showDialog(
@@ -274,7 +278,10 @@ class _HomesPageState extends State<HomesPage> {
             },
           );
         },
-        child: const Icon(Icons.add_home_outlined),
+        child: Icon(
+          Icons.add_home_outlined,
+          color: homeventory.primary,
+        ),
       ),
     );
   }

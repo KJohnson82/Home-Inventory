@@ -6,12 +6,12 @@ import 'package:google_fonts/google_fonts.dart';
 // // // These ColorScheme objects require Flutter 3.7 or later.
 // //
 const ColorScheme homeventory = ColorScheme(
-  brightness: Brightness.light,
-  primary: Color(0xff19647e),
+  brightness: Brightness.dark,
+  primary: Color(0xff00838F),
   onPrimary: Color(0xffffffff),
   primaryContainer: Color(0xff0081a5),
   onPrimaryContainer: Color(0xffffffff),
-  secondary: Color(0xfffeb716),
+  secondary: Color(0xffFF8A65),
   onSecondary: Color(0xff000000),
   secondaryContainer: Color(0xffffba2a),
   onSecondaryContainer: Color(0xff000000),
@@ -23,7 +23,7 @@ const ColorScheme homeventory = ColorScheme(
   onError: Color(0xffffffff),
   errorContainer: Color(0xffffdad6),
   onErrorContainer: Color(0xff410002),
-  background: Color(0xff90a4ae),
+  background: Color(0xff232323),
   onBackground: Color(0xff000000),
   surface: Color(0xffffffff),
   onSurface: Color(0xff000000),

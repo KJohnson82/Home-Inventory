@@ -16,10 +16,11 @@ Future<void> main() async {
 
   runApp(
     MaterialApp(
-      theme: ThemeData.from(colorScheme: homeventory),
+      theme: ThemeData.from(colorScheme: homeventory, useMaterial3: true, textTheme: GoogleFonts.poppinsTextTheme()),
       title: 'HOMVENTORY',
       home: Scaffold(
         appBar: AppBar(
+          backgroundColor: homeventory.primary,
           title: const Text('HOMEVENTORY'),
           centerTitle: true,
         ),

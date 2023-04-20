@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hvtest1/Routes/Homes.dart';
+import '../theme.dart';
 import 'ItemsForm.dart';
 import 'RoomItems.dart';
 import '../main.dart';
@@ -55,6 +56,74 @@ class _RoomsPageState extends State<RoomsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        padding: EdgeInsets.fromLTRB(5, 10, 10, 10),
+        color: homeventory.primary,
+        surfaceTintColor: homeventory.primary,
+        elevation: 3,
+        notchMargin: 8,
+        shape: const AutomaticNotchedShape(
+          ContinuousRectangleBorder(
+            // borderRadius: BorderRadius.all(
+            //   Radius.circular(1),
+            // )),
+          ),
+          StadiumBorder(),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            // Icon(Icons.home_filled, size: 40,),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(5, 0, 75, 0),
+              child: SizedBox(
+                height: 40,
+                width: 60,
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.add_home,
+                      size: 40,
+                      color: homeventory.secondary,
+                      semanticLabel: "Homes",
+                    ),
+                    // Text(
+                    //   'Homes',
+                    //   style:
+                    //       TextStyle(color: homeventory.secondary, fontSize: 15),
+                    // ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(75, 0, 5, 0),
+              child: SizedBox(
+                height: 40,
+                width: 60,
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.list_alt,
+                      size: 40,
+                      color: homeventory.secondary,
+                      semanticLabel: "Items",
+                    ),
+                    // Text(
+                    //   'Items',
+                    //   style:
+                    //       TextStyle(color: homeventory.secondary, fontSize: 15),
+                    // ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
         title: Text('HOMEVENTORY: ${widget.homeName}'),
         centerTitle: true,
@@ -176,7 +245,7 @@ class _RoomsPageState extends State<RoomsPage> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.large(
         elevation: 2,
         onPressed: () {
           showDialog(
