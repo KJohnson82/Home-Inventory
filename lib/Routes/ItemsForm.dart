@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../theme.dart';
 import 'RoomItems.dart';
 
 class Item {
@@ -102,6 +103,7 @@ class _ItemFormState extends State<ItemForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        shadowColor: homeventory.background,
         centerTitle: true,
         title: const Text('Add Item'),
       ),

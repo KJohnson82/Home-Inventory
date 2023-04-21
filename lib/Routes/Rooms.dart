@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hvtest1/Routes/Homes.dart';
+import 'package:page_transition/page_transition.dart';
 import '../theme.dart';
 import 'ItemsForm.dart';
 import 'RoomItems.dart';
@@ -32,7 +33,7 @@ class _RoomsPageState extends State<RoomsPage> {
   void _addRoom() async {
     if (_formKey.currentState!.validate()) {
       await db.collection('homes').doc(widget.homeId).collection('rooms').add({
-        'roomName': _roomNameController.text,
+        'roomName': _roomNameController.text.toUpperCase(),
       });
       _roomNameController.clear();
       Navigator.of(context).pop();
@@ -47,7 +48,7 @@ class _RoomsPageState extends State<RoomsPage> {
           .collection('rooms')
           .doc(documentId)
           .update({
-        'roomName': newName,
+        'roomName': newName.toUpperCase(),
       });
       _roomNameController.clear();
     }
@@ -85,9 +86,9 @@ class _RoomsPageState extends State<RoomsPage> {
                 child: Column(
                   children: [
                     Icon(
-                      Icons.add_home,
+                      Icons.add_home_outlined,
                       size: 40,
-                      color: homeventory.secondary,
+                      color: homeventory.onSecondary,
                       semanticLabel: "Homes",
                     ),
                     // Text(
@@ -109,7 +110,7 @@ class _RoomsPageState extends State<RoomsPage> {
                     Icon(
                       Icons.list_alt,
                       size: 40,
-                      color: homeventory.secondary,
+                      color: homeventory.onSecondary,
                       semanticLabel: "Items",
                     ),
                     // Text(
@@ -125,7 +126,9 @@ class _RoomsPageState extends State<RoomsPage> {
         ),
       ),
       appBar: AppBar(
-        title: Text('HOMEVENTORY: ${widget.homeName}'),
+        title: Text('HOMEVENTORY: ${widget.homeName}', style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold)),
+        backgroundColor: homeventory.primary,
+        shadowColor: homeventory.background,
         centerTitle: true,
       ),
       body: StreamBuilder<QuerySnapshot>(
@@ -154,12 +157,10 @@ class _RoomsPageState extends State<RoomsPage> {
                 onTap: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => RoomItemsPage(
-                          roomId: rooms[index].id,
-                          roomName: rooms[index]['roomName'],
-                        ),
-                      ));
+                      PageTransition(child: RoomItemsPage(
+                        roomId: rooms[index].id,
+                        roomName: rooms[index]['roomName'],
+                      ), type: PageTransitionType.rightToLeftWithFade, duration: Duration(milliseconds: 300)));
                 },
                 onLongPress: () {
                   showDialog(
@@ -215,27 +216,31 @@ class _RoomsPageState extends State<RoomsPage> {
                       });
                 },
                 child: Card(
+                  elevation: 8,
+                  color: Colors.transparent,
+                  shadowColor: homeventory.background,
                   child: Container(
                     alignment: Alignment.center,
-                    // decoration: BoxDecoration(
-                    //   // color: appTheme.colorScheme.surface,
-                    //   // color: Colors.blue,
-                    //   borderRadius: BorderRadius.circular(15),
-                    //   boxShadow: const [
-                    //     BoxShadow(
-                    //         color: Colors.black12,
-                    //         spreadRadius: 1,
-                    //         blurRadius: 10,
-                    //         offset: Offset(2, 6))
-                    //   ],
-                    //   shape: BoxShape.rectangle,
-                    // ),
-                    // child: Text(rooms[index]['roomName'],style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),),
+                    // color: homeventory.secondary,
+                    decoration: BoxDecoration(
+                      color: homeventory.secondary,
+                      borderRadius: BorderRadius.circular(15),
+                      // boxShadow: const [
+                      //   BoxShadow(
+                      //       color: Colors.black12,
+                      //       spreadRadius: 1,
+                      //       blurRadius: 10,
+                      //       offset: Offset(2, 6))
+                      // ],
+                      shape: BoxShape.rectangle,
+                    ),
                     child: Text(
                       rooms[index]['roomName'],
                       style: TextStyle(
+                        color: homeventory.onSecondary,
+                        fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        fontFamily: "GoogleFonts.poppins()",
                       ),
                     ),
                   ),
@@ -285,7 +290,7 @@ class _RoomsPageState extends State<RoomsPage> {
                 );
               });
         },
-        child: const Icon(Icons.add_home_work_outlined),
+        child: const Icon(Icons.add_home_work_outlined, size: 50,),
       ),
     );
   }

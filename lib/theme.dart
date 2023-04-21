@@ -23,7 +23,7 @@ const ColorScheme homeventory = ColorScheme(
   onError: Color(0xffffffff),
   errorContainer: Color(0xffffdad6),
   onErrorContainer: Color(0xff410002),
-  background: Color(0xff232323),
+  background: Color(0xff424242),
   onBackground: Color(0xff000000),
   surface: Color(0xffffffff),
   onSurface: Color(0xff000000),

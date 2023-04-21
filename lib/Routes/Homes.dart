@@ -5,6 +5,7 @@ import 'Rooms.dart';
 import '../main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Home {
   String? homeName;
@@ -138,12 +139,12 @@ class _HomesPageState extends State<HomesPage> {
                 onTap: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => RoomsPage(
-                          homeId: homes[index].id,
-                          homeName: homes[index]['homeName'],
-                        ),
-                      ));
+                    PageTransition(child: RoomsPage(
+                        homeId: homes[index].id,
+                        homeName: homes[index]['homeName'],
+                      ),
+                    type: PageTransitionType.rightToLeft, duration: Duration(milliseconds: 300))
+                      );
                 },
                 onLongPress: () {
                   showDialog(
@@ -201,8 +202,10 @@ class _HomesPageState extends State<HomesPage> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
                   child: Card(
+                    elevation: 8,
                     color: Colors.transparent,
-                    shadowColor: Colors.transparent,
+                    shadowColor: homeventory.background,
+                    surfaceTintColor: Colors.transparent,
                     child: Container(
                       height: 50,
                       width: 50,
@@ -211,20 +214,20 @@ class _HomesPageState extends State<HomesPage> {
                       decoration: BoxDecoration(
                         color: homeventory.secondary,
                         borderRadius: BorderRadius.circular(15),
-                        boxShadow: const [
-                          BoxShadow(
-                              color: Colors.black12,
-                              spreadRadius: 1,
-                              blurRadius: 10,
-                              offset: Offset(2, 6))
-                        ],
+                        // boxShadow: const [
+                        //   BoxShadow(
+                        //       color: Colors.black12,
+                        //       spreadRadius: 1,
+                        //       blurRadius: 10,
+                        //       offset: Offset(2, 6))
+                        // ],
                         shape: BoxShape.rectangle,
                       ),
                       child: Text(
                         homes[index]['homeName'],
                         style: TextStyle(
-                          color: homeventory.onPrimaryContainer,
-                          fontSize: 25,
+                          color: homeventory.onSecondary,
+                          fontSize: 30,
                           fontWeight: FontWeight.bold,
                           fontFamily: "GoogleFonts.poppins()",
                         ),
@@ -280,7 +283,8 @@ class _HomesPageState extends State<HomesPage> {
         },
         child: Icon(
           Icons.add_home_outlined,
-          color: homeventory.primary,
+          size: 50,
+          // color: homeventory.primary,
         ),
       ),
     );

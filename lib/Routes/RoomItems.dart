@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import '../theme.dart';
 import 'ItemsForm.dart';
 import '../main.dart';
+import 'Rooms.dart';
 
 class RoomItem {
   int? itemId;
@@ -18,8 +20,9 @@ class RoomItem {
 
 class RoomItemsPage extends StatefulWidget {
   final String roomId;
+  final String roomName;
 
-  RoomItemsPage({super.key, required this.roomId, required roomName});
+  RoomItemsPage({super.key, required this.roomId, required this.roomName});
 
   @override
   _RoomItemsPageState createState() => _RoomItemsPageState();
@@ -60,21 +63,21 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
             Padding(
               padding: const EdgeInsets.fromLTRB(5, 0, 75, 0),
               child: SizedBox(
-                height: 60,
+                height: 40,
                 width: 60,
                 child: Column(
                   children: [
                     Icon(
-                      Icons.add_home,
+                      Icons.add_home_outlined,
                       size: 40,
-                      color: homeventory.secondary,
+                      color: homeventory.onSecondary,
                       semanticLabel: "Homes",
                     ),
-                    Text(
-                      'Homes',
-                      style:
-                      TextStyle(color: homeventory.secondary, fontSize: 15),
-                    ),
+                    // Text(
+                    //   'Homes',
+                    //   style:
+                    //   TextStyle(color: homeventory.secondary, fontSize: 15),
+                    // ),
                   ],
                 ),
               ),
@@ -82,21 +85,21 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
             Padding(
               padding: const EdgeInsets.fromLTRB(75, 0, 5, 0),
               child: SizedBox(
-                height: 60,
+                height: 40,
                 width: 60,
                 child: Column(
                   children: [
                     Icon(
-                      Icons.home_work,
+                      Icons.home_work_outlined,
                       size: 40,
-                      color: homeventory.secondary,
+                      color: homeventory.onSecondary,
                       semanticLabel: "Rooms",
                     ),
-                    Text(
-                      'Rooms',
-                      style:
-                      TextStyle(color: homeventory.secondary, fontSize: 15),
-                    ),
+                    // Text(
+                    //   'Rooms',
+                    //   style:
+                    //   TextStyle(color: homeventory.secondary, fontSize: 15),
+                    // ),
                   ],
                 ),
               ),
@@ -105,8 +108,10 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
         ),
       ),
       appBar: AppBar(
+        backgroundColor: homeventory.primary,
+        shadowColor: homeventory.background,
         centerTitle: true,
-        title: const Text('Room Items'),
+        title: Text('${widget.roomName}: ITEMS', style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold,)),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: db
@@ -126,13 +131,15 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
               final item = items[index].data() as Map<String, dynamic>;
               return GestureDetector(
                 child: Card(
-                  // color: Colors.blue,
+                  color: homeventory.secondary,
+                  shadowColor: homeventory.background,
+                  surfaceTintColor: homeventory.secondaryContainer,
                   margin: EdgeInsets.fromLTRB(3, 3, 3, 1),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                       // side: BorderSide(color: Colors.blueGrey),
                   ),
-                  elevation: 3,
+                  elevation: 8,
                   child: ExpansionTile(
                     tilePadding: EdgeInsets.fromLTRB(20, 4, 20, 4),
                     // textColor: Colors.white,
@@ -202,39 +209,11 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => ItemForm(roomId: widget.roomId),
-            ),
+            PageTransition(child: ItemForm(roomId: widget.roomId), type: PageTransitionType.rightToLeftWithFade, duration: Duration(milliseconds: 300))
           );
         },
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.list_alt, size: 50),
       ),
     );
   }
 }
-
-// deleteItem(item) {
-//   showDialog(
-//       context: context,
-//       builder: (context) {
-//         return AlertDialog(
-//           title: Text('Delete ${items[index]["itemName"]}?'),
-//           actions: <Widget>[
-//             TextButton(
-//               child: const Text('Confirm'),
-//               onPressed: () {
-//                 String documentId = item[index].id;
-//                 db
-//                     .collection('rooms')
-//                     .doc(widget.roomId)
-//                     .collection('items')
-//                     .doc(documentId)
-//                     .delete();
-//                 _itemNameController.clear();
-//                 Navigator.of(context).pop();
-//               },
-//             ),
-//           ],
-//         );
-//       });
-// }
