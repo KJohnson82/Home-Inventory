@@ -29,6 +29,8 @@ class _HomesPageState extends State<HomesPage> {
   final TextEditingController _homeNameController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
+  int homeCount = 0;
+
   void _addHome() async {
     if (_formKey.currentState!.validate()) {
       await _homes.add({
@@ -37,6 +39,7 @@ class _HomesPageState extends State<HomesPage> {
       _homeNameController.clear();
       Navigator.of(context).pop();
       setState(() {});
+      homeCount = homeCount + 1;
     }
   }
 
@@ -49,6 +52,13 @@ class _HomesPageState extends State<HomesPage> {
       setState(() {});
       // Navigator.of(context).pop();
     }
+  }
+
+  void updateHomeCount(int count) async {
+    await Future.delayed(const Duration(milliseconds: 3));
+    setState(() {
+      homeCount = count;
+    });
   }
 
   @override
@@ -126,25 +136,27 @@ class _HomesPageState extends State<HomesPage> {
             return const Center(child: CircularProgressIndicator());
           }
           final homes = snapshot.data!.docs;
+          updateHomeCount(homes.length);
+
           return GridView.builder(
             scrollDirection: Axis.vertical,
             padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 50),
             itemCount: homes.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 1,
-              // childAspectRatio: 2,
             ),
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {
                   Navigator.push(
                       context,
-                    PageTransition(child: RoomsPage(
-                        homeId: homes[index].id,
-                        homeName: homes[index]['homeName'],
-                      ),
-                    type: PageTransitionType.rightToLeft, duration: Duration(milliseconds: 300))
-                      );
+                      PageTransition(
+                          child: RoomsPage(
+                            homeId: homes[index].id,
+                            homeName: homes[index]['homeName'],
+                          ),
+                          type: PageTransitionType.rightToLeft,
+                          duration: Duration(milliseconds: 300)));
                 },
                 onLongPress: () {
                   showDialog(
@@ -190,6 +202,7 @@ class _HomesPageState extends State<HomesPage> {
                                         .delete();
                                     _homeNameController.clear();
                                     Navigator.of(context).pop();
+                                    updateHomeCount(homeCount - 1);
                                   },
                                 ),
                               ],
@@ -242,45 +255,87 @@ class _HomesPageState extends State<HomesPage> {
       ),
       floatingActionButton: FloatingActionButton.large(
         // elevation: 3,
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Add A New Home'),
-                content: Form(
-                  key: _formKey,
-                  child: TextFormField(
-                    controller: _homeNameController,
-                    decoration: const InputDecoration(labelText: 'Home Name'),
-                    focusNode: _focusNode,
-                    autofocus: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a name';
-                      }
-                      return null;
-                    },
-                    onEditingComplete: () {
-                      _addHome();
-                      _homeNameController.clear();
-                    },
-                  ),
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('Save'),
-                    onPressed: () {
-                      _addHome();
-                      _homeNameController.clear();
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              );
-            },
-          );
-        },
+        // onPressed: () {
+        //   showDialog(
+        //     context: context,
+        //     builder: (BuildContext context) {
+        //       return AlertDialog(
+        //         title: const Text('Add A New Home'),
+        //         content: Form(
+        //           key: _formKey,
+        //           child: TextFormField(
+        //             controller: _homeNameController,
+        //             decoration: const InputDecoration(labelText: 'Home Name'),
+        //             focusNode: _focusNode,
+        //             autofocus: true,
+        //             validator: (value) {
+        //               if (value == null || value.isEmpty) {
+        //                 return 'Please enter a name';
+        //               }
+        //               return null;
+        //             },
+        //             onEditingComplete: () {
+        //               _addHome();
+        //               _homeNameController.clear();
+        //             },
+        //           ),
+        //         ),
+        //         actions: <Widget>[
+        //           TextButton(
+        //             child: const Text('Save'),
+        //             onPressed: () {
+        //               _addHome();
+        //               _homeNameController.clear();
+        //               Navigator.of(context).pop();
+        //             },
+        //           ),
+        //         ],
+        //       );
+        //     },
+        //   );
+        // },
+        onPressed: homeCount < 3
+            ? () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Add A New Home'),
+                      content: Form(
+                        key: _formKey,
+                        child: TextFormField(
+                          controller: _homeNameController,
+                          decoration:
+                              const InputDecoration(labelText: 'Home Name'),
+                          focusNode: _focusNode,
+                          autofocus: true,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a name';
+                            }
+                            return null;
+                          },
+                          onEditingComplete: () {
+                            _addHome();
+                            _homeNameController.clear();
+                          },
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('Save'),
+                          onPressed: () {
+                            _addHome();
+                            _homeNameController.clear();
+                            // Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
+            : () {},
         child: Icon(
           Icons.add_home_outlined,
           size: 50,
