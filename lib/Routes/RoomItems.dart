@@ -48,10 +48,10 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
         notchMargin: 8,
         shape: const AutomaticNotchedShape(
           ContinuousRectangleBorder(
-            // borderRadius: BorderRadius.all(
-            //   Radius.circular(1),
-            // )),
-          ),
+              // borderRadius: BorderRadius.all(
+              //   Radius.circular(1),
+              // )),
+              ),
           StadiumBorder(),
         ),
         child: Row(
@@ -111,7 +111,11 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
         backgroundColor: homeventory.primary,
         shadowColor: homeventory.background,
         centerTitle: true,
-        title: Text('${widget.roomName}: ITEMS', style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold,)),
+        title: Text('${widget.roomName}: ITEMS',
+            style: TextStyle(
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.bold,
+            )),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: db
@@ -136,8 +140,8 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
                   surfaceTintColor: homeventory.secondaryContainer,
                   margin: EdgeInsets.fromLTRB(3, 3, 3, 1),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      // side: BorderSide(color: Colors.blueGrey),
+                    borderRadius: BorderRadius.circular(5),
+                    // side: BorderSide(color: Colors.blueGrey),
                   ),
                   elevation: 8,
                   child: ExpansionTile(
@@ -148,7 +152,10 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
                     // backgroundColor: Colors.white,
                     initiallyExpanded: false,
                     // trailing: Icon(Icons.keyboard_arrow_down, color: Colors.white,),
-                    title: Text(item['itemName'] ?? 'No Name', style: TextStyle(fontWeight: FontWeight.bold),),
+                    title: Text(
+                      item['itemName'] ?? 'No Name',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     children: [
                       ListTile(
                         title: Text('Type: ${item['itemType'] ?? 'N/A'}'),
@@ -179,25 +186,67 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
                   showDialog(
                       context: context,
                       builder: (context) {
-                        return AlertDialog(
-                          title: Text('Delete ${items[index]["itemName"]}?'),
-                          actions: <Widget>[
-                            TextButton(
-                              child: const Text('Confirm'),
-                              onPressed: () {
-                                String documentId = items[index].id;
-                                db
-                                    .collection('rooms')
-                                    .doc(widget.roomId)
-                                    .collection('items')
-                                    .doc(documentId)
-                                    .delete();
-                                _itemNameController.clear();
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        );
+                        return StatefulBuilder(builder:
+                            (BuildContext context, StateSetter setState) {
+                          return AlertDialog(
+                            backgroundColor: homeventory.secondary,
+                            title: Text(
+                                'Edit or Delete ${items[index]["itemName"]}?'),
+                            actions: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                      Navigator.push(
+                                        context,
+                                        PageTransition(
+                                          child: ItemForm(
+                                            roomId: widget.roomId,
+                                            item: Item.fromMap(item),
+                                            documentId: items[index].id,
+                                          ),
+                                          type: PageTransitionType
+                                              .rightToLeftWithFade,
+                                          duration: Duration(milliseconds: 300),
+                                        ),
+                                      );
+                                    },
+                                    child: Row(
+
+                                      children: [
+                                        const Text('Edit  '),
+                                        Icon(Icons.edit),
+                                      ],
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      String documentId = items[index].id;
+                                      db
+                                          .collection('rooms')
+                                          .doc(widget.roomId)
+                                          .collection('items')
+                                          .doc(documentId)
+                                          .delete();
+                                      _itemNameController.clear();
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Row(
+                                      children: [
+                                        const Text('Delete  '),
+                                        Icon(Icons.delete)
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          );
+                        });
                       });
                 },
               );
@@ -208,9 +257,11 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
       floatingActionButton: FloatingActionButton.large(
         onPressed: () {
           Navigator.push(
-            context,
-            PageTransition(child: ItemForm(roomId: widget.roomId), type: PageTransitionType.rightToLeftWithFade, duration: Duration(milliseconds: 300))
-          );
+              context,
+              PageTransition(
+                  child: ItemForm(roomId: widget.roomId),
+                  type: PageTransitionType.rightToLeftWithFade,
+                  duration: Duration(milliseconds: 300)));
         },
         child: const Icon(Icons.list_alt, size: 50),
       ),

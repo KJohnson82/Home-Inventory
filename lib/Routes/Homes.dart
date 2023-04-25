@@ -166,6 +166,7 @@ class _HomesPageState extends State<HomesPage> {
                           builder:
                               (BuildContext context, StateSetter setState) {
                             return AlertDialog(
+                              backgroundColor: homeventory.secondary,
                               title: Text(
                                   'Edit or Delete ${homes[index]["homeName"]}?'),
                               content: Form(
@@ -182,28 +183,45 @@ class _HomesPageState extends State<HomesPage> {
                                   },
                                 ),
                               ),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: const Text('Confirm'),
-                                  onPressed: () {
-                                    String documentId = homes[index].id;
-                                    _editHome(
-                                        documentId, _homeNameController.text);
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                                TextButton(
-                                  child: const Text('Delete'),
-                                  onPressed: () {
-                                    String documentId = homes[index].id;
-                                    db
-                                        .collection('homes')
-                                        .doc(documentId)
-                                        .delete();
-                                    _homeNameController.clear();
-                                    Navigator.of(context).pop();
-                                    updateHomeCount(homeCount - 1);
-                                  },
+                              actions: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: <Widget>[
+                                    TextButton(
+                                      child: Row(
+                                        children: [
+                                          const Text('Confirm  '),
+                                          Icon(Icons.check)
+                                        ],
+                                      ),
+                                      onPressed: () {
+                                        String documentId = homes[index].id;
+                                        _editHome(
+                                            documentId, _homeNameController.text);
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    TextButton(
+                                    child: Row(
+                                    children: [
+                                    const Text('Delete  '),
+                                    Icon(Icons.delete)
+                                    ],
+                                    ),
+                                      onPressed: () {
+                                        String documentId = homes[index].id;
+                                        db
+                                            .collection('homes')
+                                            .doc(documentId)
+                                            .delete();
+                                        _homeNameController.clear();
+                                        Navigator.of(context).pop();
+                                        updateHomeCount(homeCount - 1);
+                                      },
+                                    ),
+                                  ],
                                 ),
                               ],
                             );
@@ -300,6 +318,7 @@ class _HomesPageState extends State<HomesPage> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
+                      backgroundColor: homeventory.secondary,
                       title: const Text('Add A New Home'),
                       content: Form(
                         key: _formKey,

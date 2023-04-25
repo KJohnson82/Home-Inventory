@@ -169,6 +169,7 @@ class _RoomsPageState extends State<RoomsPage> {
                         return StatefulBuilder(builder:
                             (BuildContext context, StateSetter setState) {
                           return AlertDialog(
+                            backgroundColor: homeventory.secondary,
                             title: Text(
                                 'Edit or Delete ${rooms[index]["roomName"]}?'),
                             content: Form(
@@ -197,7 +198,12 @@ class _RoomsPageState extends State<RoomsPage> {
                                 },
                               ),
                               TextButton(
-                                child: const Text('Delete'),
+                              child: Row(
+                              children: [
+                              const Text('Delete  '),
+                              Icon(Icons.delete)
+                              ],
+                              ),
                                 onPressed: () {
                                   String documentId = rooms[index].id;
                                   db
@@ -257,6 +263,7 @@ class _RoomsPageState extends State<RoomsPage> {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
+                  backgroundColor: homeventory.secondary,
                   title: const Text('Enter A Room Name: '),
                   content: Form(
                     key: _formKey,
