@@ -70,14 +70,14 @@ class ItemForm extends StatefulWidget {
 class _ItemFormState extends State<ItemForm> {
   final _firestore = FirebaseFirestore.instance;
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _itemNameController = TextEditingController();
-  TextEditingController _itemTypeController = TextEditingController();
-  TextEditingController _itemSubtypeController = TextEditingController();
-  TextEditingController _itemBrandController = TextEditingController();
-  TextEditingController _itemModelController = TextEditingController();
-  TextEditingController _itemDimensionsController = TextEditingController();
-  TextEditingController _itemColorController = TextEditingController();
-  TextEditingController _itemNotesController = TextEditingController();
+  final TextEditingController _itemNameController = TextEditingController();
+  final TextEditingController _itemTypeController = TextEditingController();
+  final TextEditingController _itemSubtypeController = TextEditingController();
+  final TextEditingController _itemBrandController = TextEditingController();
+  final TextEditingController _itemModelController = TextEditingController();
+  final TextEditingController _itemDimensionsController = TextEditingController();
+  final TextEditingController _itemColorController = TextEditingController();
+  final TextEditingController _itemNotesController = TextEditingController();
 
   void _addItem() async {
     if (_formKey.currentState!.validate()) {

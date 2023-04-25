@@ -29,6 +29,7 @@ Future<void> main() async {
           title: const Text('HOMEVENTORY', style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold,)),
           centerTitle: true,
         ),
+        // Launches the Homes Page as the main app page
         body: HomesPage(),
       ),
     ),
