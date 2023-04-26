@@ -106,6 +106,7 @@ class _ItemFormState extends State<ItemForm> {
         'itemColor': _itemColorController.text,
         'itemNotes': _itemNotesController.text,
       };
+      Navigator.of(context).pop();
 
       if (widget.documentId != null ) {
         await _firestore
@@ -123,7 +124,7 @@ class _ItemFormState extends State<ItemForm> {
             .add(itemData);
       }
 
-      Navigator.of(context).pop();
+      // Navigator.of(context).pop();
     }
   }
 
@@ -131,6 +132,7 @@ class _ItemFormState extends State<ItemForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: homeventory.primary,
         shadowColor: homeventory.background,
         centerTitle: true,
         title: Text(widget.item == null ? 'Add Item' : 'Edit Item'),
@@ -156,6 +158,7 @@ class _ItemFormState extends State<ItemForm> {
                 style: TextStyle(color: homeventory.onPrimary),
                 controller: _itemTypeController,
                 decoration: const InputDecoration(labelText: 'Item Type'),
+                autofocus: true,
               ),
               TextFormField(
                 style: TextStyle(color: homeventory.onPrimary),

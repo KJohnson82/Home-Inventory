@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hvtest1/Routes/Homes.dart';
 import 'package:page_transition/page_transition.dart';
+import '../firestore_instance.dart';
 import '../theme.dart';
 import 'ItemsForm.dart';
 import 'RoomItems.dart';
@@ -25,14 +26,18 @@ class RoomsPage extends StatefulWidget {
 }
 
 class _RoomsPageState extends State<RoomsPage> {
-  final _rooms = db.collection("rooms");
+  // final _rooms = db.collection("rooms");
+  final _rooms = FirestoreInstance.getInstance().collection("rooms");
+
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _roomNameController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
   void _addRoom() async {
     if (_formKey.currentState!.validate()) {
-      await db.collection('homes').doc(widget.homeId).collection('rooms').add({
+
+      // await db.collection('homes').doc(widget.homeId).collection('rooms').add({
+      await FirestoreInstance.getInstance().collection('homes').doc(widget.homeId).collection('rooms').add({
         'roomName': _roomNameController.text.toUpperCase(),
       });
       _roomNameController.clear();
@@ -42,7 +47,8 @@ class _RoomsPageState extends State<RoomsPage> {
 
   void _editRoom(String documentId, String newName) async {
     if (_formKey.currentState!.validate()) {
-      await db
+      // await db
+        await FirestoreInstance.getInstance()
           .collection('homes')
           .doc(widget.homeId)
           .collection('rooms')
@@ -132,7 +138,8 @@ class _RoomsPageState extends State<RoomsPage> {
         centerTitle: true,
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: db
+        // stream: db
+          stream: FirestoreInstance.getInstance()
             .collection('homes')
             .doc(widget.homeId)
             .collection('rooms')
@@ -206,7 +213,8 @@ class _RoomsPageState extends State<RoomsPage> {
                               ),
                                 onPressed: () {
                                   String documentId = rooms[index].id;
-                                  db
+                                  // db
+                                  FirestoreInstance.getInstance()
                                       .collection('homes')
                                       .doc(widget.homeId)
                                       .collection('rooms')

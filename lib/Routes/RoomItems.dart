@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import '../firestore_instance.dart';
 import '../theme.dart';
 import 'ItemsForm.dart';
 import '../main.dart';
@@ -30,7 +31,9 @@ class RoomItemsPage extends StatefulWidget {
 
 class _RoomItemsPageState extends State<RoomItemsPage> {
   // final _firestore = FirebaseFirestore.instance;
-  final items = db.collection("items");
+
+  // final items = db.collection("items");
+  final items = FirestoreInstance.getInstance().collection("items");
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _itemNameController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
@@ -118,7 +121,8 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
             )),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: db
+        // stream: db
+          stream: FirestoreInstance.getInstance()
             .collection('rooms')
             .doc(widget.roomId)
             .collection('items')
@@ -226,7 +230,8 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
                                   TextButton(
                                     onPressed: () {
                                       String documentId = items[index].id;
-                                      db
+                                      // db
+                                      FirestoreInstance.getInstance()
                                           .collection('rooms')
                                           .doc(widget.roomId)
                                           .collection('items')

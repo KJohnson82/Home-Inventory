@@ -8,13 +8,25 @@ import 'package:google_fonts/google_fonts.dart';
 // import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'theme.dart';
 import 'package:page_transition/page_transition.dart';
+import 'firestore_instance.dart';
 
 
-FirebaseFirestore db = FirebaseFirestore.instance;
+// FirebaseFirestore db = FirebaseFirestore.instance;
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  // FirebaseFirestore db = FirebaseFirestore.instance;
+  // db.settings = const Settings(persistenceEnabled: true);
+
+  await FirestoreInstance.setSettings(
+    const Settings(
+      persistenceEnabled: true,
+      cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
+    )
+  );
 
   runApp(
     MaterialApp(

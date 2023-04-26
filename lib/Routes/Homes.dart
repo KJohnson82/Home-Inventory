@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hvtest1/firestore_instance.dart';
 import '../theme.dart';
 import 'Rooms.dart';
 import '../main.dart';
@@ -24,7 +25,7 @@ class HomesPage extends StatefulWidget {
 }
 
 class _HomesPageState extends State<HomesPage> {
-  final _homes = db.collection("homes");
+  final _homes = FirestoreInstance.getInstance().collection("homes");
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _homeNameController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
@@ -37,10 +38,10 @@ class _HomesPageState extends State<HomesPage> {
         'homeName': _homeNameController.text.toUpperCase(),
       });
       _homeNameController.clear();
-      Navigator.of(context).pop();
       setState(() {});
       homeCount = homeCount + 1;
     }
+    // Navigator.of(context).pop();
   }
 
   void _editHome(String documentId, String newName) async {
@@ -55,7 +56,7 @@ class _HomesPageState extends State<HomesPage> {
   }
 
   void updateHomeCount(int count) async {
-    await Future.delayed(const Duration(milliseconds: 3));
+    await Future.delayed(const Duration(milliseconds: 1));
     setState(() {
       homeCount = count;
     });
@@ -212,7 +213,8 @@ class _HomesPageState extends State<HomesPage> {
                                     ),
                                       onPressed: () {
                                         String documentId = homes[index].id;
-                                        db
+                                        // db
+                                        FirestoreInstance.getInstance()
                                             .collection('homes')
                                             .doc(documentId)
                                             .delete();
@@ -344,6 +346,7 @@ class _HomesPageState extends State<HomesPage> {
                         TextButton(
                           child: const Text('Save'),
                           onPressed: () {
+                            Navigator.of(context).pop();
                             _addHome();
                             _homeNameController.clear();
                             // Navigator.of(context).pop();
