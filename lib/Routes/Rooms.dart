@@ -35,9 +35,12 @@ class _RoomsPageState extends State<RoomsPage> {
 
   void _addRoom() async {
     if (_formKey.currentState!.validate()) {
-
       // await db.collection('homes').doc(widget.homeId).collection('rooms').add({
-      await FirestoreInstance.getInstance().collection('homes').doc(widget.homeId).collection('rooms').add({
+      await FirestoreInstance.getInstance()
+          .collection('homes')
+          .doc(widget.homeId)
+          .collection('rooms')
+          .add({
         'roomName': _roomNameController.text.toUpperCase(),
       });
       _roomNameController.clear();
@@ -48,7 +51,7 @@ class _RoomsPageState extends State<RoomsPage> {
   void _editRoom(String documentId, String newName) async {
     if (_formKey.currentState!.validate()) {
       // await db
-        await FirestoreInstance.getInstance()
+      await FirestoreInstance.getInstance()
           .collection('homes')
           .doc(widget.homeId)
           .collection('rooms')
@@ -65,17 +68,17 @@ class _RoomsPageState extends State<RoomsPage> {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        padding: EdgeInsets.fromLTRB(5, 10, 10, 10),
+        padding: const EdgeInsets.fromLTRB(5, 10, 10, 10),
         color: homeventory.primary,
         surfaceTintColor: homeventory.primary,
         elevation: 3,
         notchMargin: 8,
         shape: const AutomaticNotchedShape(
           ContinuousRectangleBorder(
-            // borderRadius: BorderRadius.all(
-            //   Radius.circular(1),
-            // )),
-          ),
+              // borderRadius: BorderRadius.all(
+              //   Radius.circular(1),
+              // )),
+              ),
           StadiumBorder(),
         ),
         child: Row(
@@ -91,17 +94,25 @@ class _RoomsPageState extends State<RoomsPage> {
                 width: 60,
                 child: Column(
                   children: [
-                    Icon(
-                      Icons.add_home_outlined,
-                      size: 40,
-                      color: homeventory.onSecondary,
-                      semanticLabel: "Homes",
+                    Expanded(
+                      flex: 2,
+                      child: IconButton(
+                        icon: const Icon(Icons.add_home_outlined),
+                        alignment: Alignment.topCenter,
+                        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        iconSize: 40,
+                        color: homeventory.onSecondary,
+                        tooltip: "Homes",
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              PageTransition(
+                                  child: HomesPage(),
+                                  type: PageTransitionType.leftToRight,
+                                  duration: Duration(milliseconds: 300)));
+                        },
+                      ),
                     ),
-                    // Text(
-                    //   'Homes',
-                    //   style:
-                    //       TextStyle(color: homeventory.secondary, fontSize: 15),
-                    // ),
                   ],
                 ),
               ),
@@ -113,16 +124,24 @@ class _RoomsPageState extends State<RoomsPage> {
                 width: 60,
                 child: Column(
                   children: [
-                    Icon(
-                      Icons.list_alt,
-                      size: 40,
-                      color: homeventory.onSecondary,
-                      semanticLabel: "Items",
-                    ),
-                    // Text(
-                    //   'Items',
-                    //   style:
-                    //       TextStyle(color: homeventory.secondary, fontSize: 15),
+                    // Expanded(
+                    //   flex: 2,
+                    //   child: IconButton(
+                    //     icon: const Icon(Icons.list_alt),
+                    //     alignment: Alignment.topCenter,
+                    //     padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    //     iconSize: 40,
+                    //     color: homeventory.onSecondary,
+                    //     tooltip: "Homes",
+                    //     onPressed: () {
+                    //       Navigator.push(
+                    //           context,
+                    //           PageTransition(
+                    //               child: RoomItemsPage(),
+                    //               type: PageTransitionType.leftToRight,
+                    //               duration: Duration(milliseconds: 300)));
+                    //     },
+                    //   ),
                     // ),
                   ],
                 ),
@@ -132,14 +151,16 @@ class _RoomsPageState extends State<RoomsPage> {
         ),
       ),
       appBar: AppBar(
-        title: Text('HOMEVENTORY: ${widget.homeName}', style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold)),
+        title: Text('HOMEVENTORY: ${widget.homeName}',
+            style:
+                TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold)),
         backgroundColor: homeventory.primary,
         shadowColor: homeventory.background,
         centerTitle: true,
       ),
       body: StreamBuilder<QuerySnapshot>(
         // stream: db
-          stream: FirestoreInstance.getInstance()
+        stream: FirestoreInstance.getInstance()
             .collection('homes')
             .doc(widget.homeId)
             .collection('rooms')
@@ -164,10 +185,13 @@ class _RoomsPageState extends State<RoomsPage> {
                 onTap: () {
                   Navigator.push(
                       context,
-                      PageTransition(child: RoomItemsPage(
-                        roomId: rooms[index].id,
-                        roomName: rooms[index]['roomName'],
-                      ), type: PageTransitionType.rightToLeftWithFade, duration: Duration(milliseconds: 300)));
+                      PageTransition(
+                          child: RoomItemsPage(
+                            roomId: rooms[index].id,
+                            roomName: rooms[index]['roomName'],
+                          ),
+                          type: PageTransitionType.rightToLeftWithFade,
+                          duration: Duration(milliseconds: 300)));
                 },
                 onLongPress: () {
                   showDialog(
@@ -176,56 +200,68 @@ class _RoomsPageState extends State<RoomsPage> {
                         return StatefulBuilder(builder:
                             (BuildContext context, StateSetter setState) {
                           return AlertDialog(
-                            backgroundColor: homeventory.secondary,
-                            title: Text(
-                                'Edit or Delete ${rooms[index]["roomName"]}?'),
-                            content: Form(
-                              key: _formKey,
-                              child: TextFormField(
-                                controller: _roomNameController,
-                                decoration: InputDecoration(
-                                    labelText: 'Edit: Room Name'),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter a new name: ';
-                                  }
-                                  return null;
-                                },
+                              backgroundColor: homeventory.secondary,
+                              title: Text(
+                                  'Edit or Delete ${rooms[index]["roomName"]}?'),
+                              content: Form(
+                                key: _formKey,
+                                child: TextFormField(
+                                  controller: _roomNameController,
+                                  decoration: InputDecoration(
+                                      labelText: 'Edit: Room Name'),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter a new name: ';
+                                    }
+                                    return null;
+                                  },
+                                ),
                               ),
-                            ),
-                            actions: <Widget>[
-                              TextButton(
-                                child: const Text('Confirm'),
-                                onPressed: () {
-                                  String documentId = rooms[index].id;
-                                  _editRoom(
-                                      documentId, _roomNameController.text);
-                                  Navigator.of(context).pop();
-                                  setState(() {});
-                                },
-                              ),
-                              TextButton(
-                              child: Row(
-                              children: [
-                              const Text('Delete  '),
-                              Icon(Icons.delete)
-                              ],
-                              ),
-                                onPressed: () {
-                                  String documentId = rooms[index].id;
-                                  // db
-                                  FirestoreInstance.getInstance()
-                                      .collection('homes')
-                                      .doc(widget.homeId)
-                                      .collection('rooms')
-                                      .doc(documentId)
-                                      .delete();
-                                  _roomNameController.clear();
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          );
+                              actions: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: <Widget>[
+                                    TextButton(
+                                      child: Row(
+                                        children: [
+                                          const Text('Confirm'),
+                                          Icon(Icons.check),
+                                        ],
+                                      ),
+                                      onPressed: () {
+                                        String documentId = rooms[index].id;
+                                        _editRoom(documentId,
+                                            _roomNameController.text);
+                                        Navigator.of(context).pop();
+                                        setState(() {});
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: Row(
+                                        children: [
+                                          const Text('Delete  '),
+                                          Icon(Icons.delete)
+                                        ],
+                                      ),
+                                      onPressed: () {
+                                        String documentId = rooms[index].id;
+                                        // db
+                                        FirestoreInstance.getInstance()
+                                            .collection('homes')
+                                            .doc(widget.homeId)
+                                            .collection('rooms')
+                                            .doc(documentId)
+                                            .delete();
+                                        _roomNameController.clear();
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ]);
                         });
                       });
                 },
@@ -305,7 +341,10 @@ class _RoomsPageState extends State<RoomsPage> {
                 );
               });
         },
-        child: const Icon(Icons.add_home_work_outlined, size: 50,),
+        child: const Icon(
+          Icons.add_home_work_outlined,
+          size: 50,
+        ),
       ),
     );
   }

@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:page_transition/page_transition.dart';
 
+// Home Class
 class Home {
   String? homeName;
   Map<Object, Room>? rooms;
@@ -25,25 +26,31 @@ class HomesPage extends StatefulWidget {
 }
 
 class _HomesPageState extends State<HomesPage> {
+  // Calls the list of already created home objects from the firestore database
   final _homes = FirestoreInstance.getInstance().collection("homes");
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _homeNameController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
+  // Used to help keep count of the num of house objects
   int homeCount = 0;
 
+  // Adds a new Home Object
   void _addHome() async {
     if (_formKey.currentState!.validate()) {
       await _homes.add({
         'homeName': _homeNameController.text.toUpperCase(),
       });
       _homeNameController.clear();
+      // Sets the state after the object is created to cause the page to rebuild
       setState(() {});
+      // Adds home to the homeCount list to keep track of number of objects
       homeCount = homeCount + 1;
     }
-    // Navigator.of(context).pop();
+    Navigator.of(context).pop();
   }
 
+  // Allows you to change the name of an existing home object
   void _editHome(String documentId, String newName) async {
     if (_formKey.currentState!.validate()) {
       await _homes.doc(documentId).update({
@@ -55,6 +62,7 @@ class _HomesPageState extends State<HomesPage> {
     }
   }
 
+  // Keeps track of the home objects count, the delay was to prevent app crashing
   void updateHomeCount(int count) async {
     await Future.delayed(const Duration(milliseconds: 1));
     setState(() {
@@ -65,12 +73,13 @@ class _HomesPageState extends State<HomesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Streams the data from the firestore database. returns as snapshots
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        padding: EdgeInsets.fromLTRB(5, 10, 10, 10),
+        padding: const EdgeInsets.fromLTRB(5, 10, 10, 10),
         color: homeventory.primary,
-        surfaceTintColor: homeventory.primary,
-        elevation: 3,
+        surfaceTintColor: homeventory.tertiary,
+        elevation: 10,
         notchMargin: 8,
         shape: const AutomaticNotchedShape(
           ContinuousRectangleBorder(
@@ -147,6 +156,7 @@ class _HomesPageState extends State<HomesPage> {
               crossAxisCount: 1,
             ),
             itemBuilder: (context, index) {
+              // Makes the created container objects clickable
               return InkWell(
                 onTap: () {
                   Navigator.push(
@@ -157,8 +167,9 @@ class _HomesPageState extends State<HomesPage> {
                             homeName: homes[index]['homeName'],
                           ),
                           type: PageTransitionType.rightToLeft,
-                          duration: Duration(milliseconds: 300)));
+                          duration: const Duration(milliseconds: 300)));
                 },
+                // Opens as dialog box to allow you to edit or delete a created object
                 onLongPress: () {
                   showDialog(
                       context: context,
@@ -257,6 +268,7 @@ class _HomesPageState extends State<HomesPage> {
                         shape: BoxShape.rectangle,
                       ),
                       child: Text(
+                        //Displays the created objects name
                         homes[index]['homeName'],
                         style: TextStyle(
                           color: homeventory.onSecondary,
@@ -274,7 +286,8 @@ class _HomesPageState extends State<HomesPage> {
         },
       ),
       floatingActionButton: FloatingActionButton.large(
-        // elevation: 3,
+        //Checks to see how many home objects exist and if it less than three allows you to add a new object, if not, it makes the button non-clickable
+        elevation: 3,
         // onPressed: () {
         //   showDialog(
         //     context: context,
@@ -349,7 +362,6 @@ class _HomesPageState extends State<HomesPage> {
                             Navigator.of(context).pop();
                             _addHome();
                             _homeNameController.clear();
-                            // Navigator.of(context).pop();
                           },
                         ),
                       ],

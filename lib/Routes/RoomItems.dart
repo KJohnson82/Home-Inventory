@@ -140,48 +140,59 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
               return GestureDetector(
                 child: Card(
                   color: homeventory.secondary,
-                  shadowColor: homeventory.background,
+                  borderOnForeground: true,
+                  shadowColor: homeventory.onSecondary,
                   surfaceTintColor: homeventory.secondaryContainer,
                   margin: EdgeInsets.fromLTRB(3, 3, 3, 1),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
                     // side: BorderSide(color: Colors.blueGrey),
                   ),
-                  elevation: 8,
+                  elevation: 4,
                   child: ExpansionTile(
-                    tilePadding: EdgeInsets.fromLTRB(20, 4, 20, 4),
-                    // textColor: Colors.white,
-                    // collapsedBackgroundColor: Colors.blue,
-                    // collapsedTextColor: Colors.white,
-                    // backgroundColor: Colors.white,
+                    collapsedTextColor: homeventory.primary,
+                    collapsedBackgroundColor: homeventory.secondary,
+                    backgroundColor: homeventory.primary,
+                    textColor: homeventory.onPrimary,
+                    iconColor: homeventory.onPrimary,
+                    collapsedIconColor: homeventory.primary,
+                    maintainState: true,
+                    tilePadding: const EdgeInsets.fromLTRB(20, 4, 20, 4),
                     initiallyExpanded: false,
-                    // trailing: Icon(Icons.keyboard_arrow_down, color: Colors.white,),
+                    childrenPadding: EdgeInsets.fromLTRB(30, 0, 10, 0),
                     title: Text(
                       item['itemName'] ?? 'No Name',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     children: [
                       ListTile(
-                        title: Text('Type: ${item['itemType'] ?? 'N/A'}'),
+                        title: Text('Type: ${item['itemType'] ?? 'N/A'}', style: TextStyle(fontWeight: FontWeight.bold, color: homeventory.onSecondary, fontSize: 15,)),
+                        dense: false,
                       ),
                       ListTile(
-                        title: Text('Subtype: ${item['itemSubtype'] ?? 'N/A'}'),
+                        title: Text('Subtype: ${item['itemSubtype'] ?? 'N/A'}', style: TextStyle(fontWeight: FontWeight.bold, color: homeventory.onSecondary)),
+                        dense: false,
                       ),
                       ListTile(
-                        title: Text('Brand: ${item['itemBrand'] ?? 'N/A'}'),
+                        title: Text('Brand: ${item['itemBrand'] ?? 'N/A'}', style: TextStyle(fontWeight: FontWeight.bold, color: homeventory.onSecondary)),
+                        dense: false,
                       ),
                       ListTile(
-                        title: Text('Model: ${item['itemModel'] ?? 'N/A'}'),
+                        title: Text('Model: ${item['itemModel'] ?? 'N/A'}', style: TextStyle(fontWeight: FontWeight.bold, color: homeventory.onSecondary)),
+                        dense: false,
                       ),
                       ListTile(
                         title: Text(
-                            'Dimensions: ${item['itemDimensions'] ?? 'N/A'}'),
+                            'Dimensions: ${item['itemDimensions'] ?? 'N/A'}', style: TextStyle(fontWeight: FontWeight.bold, color: homeventory.onSecondary)),
+                        dense: false,
                       ),
                       ListTile(
-                        title: Text('Color: ${item['itemColor'] ?? 'N/A'}'),
+                        title: Text('Color: ${item['itemColor'] ?? 'N/A'}', style: TextStyle(fontWeight: FontWeight.bold, color: homeventory.onSecondary)),
+                        dense: false,
                       ),
                       ListTile(
-                        title: Text('Notes: ${item['itemNotes'] ?? 'N/A'}'),
+                        title: Text('Notes: ${item['itemNotes'] ?? 'N/A'}', style: TextStyle(fontWeight: FontWeight.bold, color: homeventory.onSecondary)),
+                        dense: false,
                       ),
                     ],
                   ),

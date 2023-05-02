@@ -144,7 +144,7 @@ class _ItemFormState extends State<ItemForm> {
           child: Column(
             children: [
               TextFormField(
-                style: TextStyle(color: homeventory.onPrimary),
+                style: TextStyle(color: homeventory.primary, fontWeight: FontWeight.bold),
                 controller: _itemNameController,
                 decoration: const InputDecoration(labelText: 'Item Name'),
                 validator: (value) {
@@ -153,42 +153,57 @@ class _ItemFormState extends State<ItemForm> {
                   }
                   return null;
                 },
+                autofocus: true,
+                maxLength: 50,
+                maxLines: 1,
               ),
               TextFormField(
-                style: TextStyle(color: homeventory.onPrimary),
+                style: TextStyle(color: homeventory.primary, fontWeight: FontWeight.bold),
                 controller: _itemTypeController,
                 decoration: const InputDecoration(labelText: 'Item Type'),
-                autofocus: true,
+                maxLength: 50,
+                maxLines: 1,
               ),
               TextFormField(
-                style: TextStyle(color: homeventory.onPrimary),
+                style: TextStyle(color: homeventory.primary, fontWeight: FontWeight.bold),
                 controller: _itemSubtypeController,
                 decoration: const InputDecoration(labelText: 'Item Subtype'),
+                maxLength: 50,
+                maxLines: 1,
               ),
               TextFormField(
-                style: TextStyle(color: homeventory.onPrimary),
+                style: TextStyle(color: homeventory.primary, fontWeight: FontWeight.bold),
                 controller: _itemBrandController,
                 decoration: const InputDecoration(labelText: 'Item Brand'),
+                maxLength: 50,
+                maxLines: 1,
               ),
               TextFormField(
-                style: TextStyle(color: homeventory.onPrimary),
+                style: TextStyle(color: homeventory.primary, fontWeight: FontWeight.bold),
                 controller: _itemModelController,
                 decoration: const InputDecoration(labelText: 'Item Model'),
+                maxLength: 50,
+                maxLines: 1,
               ),
               TextFormField(
-                style: TextStyle(color: homeventory.onPrimary),
+                style: TextStyle(color: homeventory.primary, fontWeight: FontWeight.bold),
                 controller: _itemDimensionsController,
                 decoration: const InputDecoration(labelText: 'Item Dimensions'),
+                maxLength: 50,
+                maxLines: 1,
               ),
               TextFormField(
-                style: TextStyle(color: homeventory.onPrimary),
+                style: TextStyle(color: homeventory.primary, fontWeight: FontWeight.bold),
                 controller: _itemColorController,
                 decoration: const InputDecoration(labelText: 'Item Color'),
+                maxLength: 50,
+                maxLines: 1,
               ),
               TextFormField(
-                style: TextStyle(color: homeventory.onPrimary),
+                style: TextStyle(color: homeventory.primary, fontWeight: FontWeight.bold),
                 controller: _itemNotesController,
                 decoration: const InputDecoration(labelText: 'Item Notes'),
+                maxLines: 4,
               ),
               const SizedBox(height: 16),
               ElevatedButton(
