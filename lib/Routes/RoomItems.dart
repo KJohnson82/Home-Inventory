@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import '../firestore_instance.dart';
 import '../theme.dart';
+import 'Homes.dart';
 import 'ItemsForm.dart';
 import '../main.dart';
 import 'Rooms.dart';
@@ -70,17 +71,25 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
                 width: 60,
                 child: Column(
                   children: [
-                    Icon(
-                      Icons.add_home_outlined,
-                      size: 40,
-                      color: homeventory.onSecondary,
-                      semanticLabel: "Homes",
+                    Expanded(
+                      flex: 2,
+                      child: IconButton(
+                        icon: const Icon(Icons.add_home_outlined),
+                        alignment: Alignment.topCenter,
+                        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        iconSize: 40,
+                        color: homeventory.onSecondary,
+                        tooltip: "Homes",
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              PageTransition(
+                                  child: HomesPage(),
+                                  type: PageTransitionType.leftToRight,
+                                  duration: Duration(milliseconds: 300)));
+                        },
+                      ),
                     ),
-                    // Text(
-                    //   'Homes',
-                    //   style:
-                    //   TextStyle(color: homeventory.secondary, fontSize: 15),
-                    // ),
                   ],
                 ),
               ),
@@ -91,19 +100,28 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
                 height: 40,
                 width: 60,
                 child: Column(
-                  children: [
-                    Icon(
-                      Icons.home_work_outlined,
-                      size: 40,
-                      color: homeventory.onSecondary,
-                      semanticLabel: "Rooms",
-                    ),
-                    // Text(
-                    //   'Rooms',
-                    //   style:
-                    //   TextStyle(color: homeventory.secondary, fontSize: 15),
-                    // ),
-                  ],
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: IconButton(
+                          icon: const Icon(Icons.home_work_outlined),
+                          alignment: Alignment.topCenter,
+                          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          iconSize: 40,
+                          color: homeventory.onSecondary,
+                          tooltip: "Homes",
+                          onPressed: () {
+                            Navigator.pop(context);
+                            // Navigator.push(
+                            //     context,
+                            //     PageTransition(
+                            //         child: Navigator.pop(context),
+                            //         type: PageTransitionType.leftToRight,
+                            //         duration: Duration(milliseconds: 300)));
+                          },
+                        ),
+                      ),
+                    ],
                 ),
               ),
             ),

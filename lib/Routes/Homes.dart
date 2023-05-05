@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hvtest1/firestore_instance.dart';
 import '../theme.dart';
 import 'Rooms.dart';
@@ -73,6 +74,13 @@ class _HomesPageState extends State<HomesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        // Sets the phone icons to use dark mode
+        systemOverlayStyle: SystemUiOverlayStyle(statusBarIconBrightness: Brightness.light),
+        backgroundColor: homeventory.primary,
+        title: const Text('HOMEVENTORY: HOMES', style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold,)),
+        centerTitle: true,
+      ),
       // Streams the data from the firestore database. returns as snapshots
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
