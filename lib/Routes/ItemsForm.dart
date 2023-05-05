@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../theme.dart';
 import 'RoomItems.dart';
+import 'package:change_case/change_case.dart';
 
 class Item {
   int? itemId;
@@ -97,13 +98,13 @@ class _ItemFormState extends State<ItemForm> {
   void _addItem() async {
     if (_formKey.currentState!.validate()) {
       Map<String, dynamic> itemData = {
-        'itemName': _itemNameController.text,
-        'itemType': _itemTypeController.text,
-        'itemSubtype': _itemSubtypeController.text,
-        'itemBrand': _itemBrandController.text,
-        'itemModel': _itemModelController.text,
+        'itemName': _itemNameController.text.toCapitalCase(),
+        'itemType': _itemTypeController.text.toCapitalCase(),
+        'itemSubtype': _itemSubtypeController.text.toCapitalCase(),
+        'itemBrand': _itemBrandController.text.toCapitalCase(),
+        'itemModel': _itemModelController.text.toCapitalCase(),
         'itemDimensions': _itemDimensionsController.text,
-        'itemColor': _itemColorController.text,
+        'itemColor': _itemColorController.text.toCapitalCase(),
         'itemNotes': _itemNotesController.text,
       };
       Navigator.of(context).pop();

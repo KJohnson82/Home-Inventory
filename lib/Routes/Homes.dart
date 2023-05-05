@@ -1,3 +1,4 @@
+import 'package:change_case/change_case.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -40,7 +41,7 @@ class _HomesPageState extends State<HomesPage> {
   void _addHome() async {
     if (_formKey.currentState!.validate()) {
       await _homes.add({
-        'homeName': _homeNameController.text.toUpperCase(),
+        'homeName': _homeNameController.text.toCapitalCase(),
       });
       _homeNameController.clear();
       // Sets the state after the object is created to cause the page to rebuild
@@ -55,7 +56,7 @@ class _HomesPageState extends State<HomesPage> {
   void _editHome(String documentId, String newName) async {
     if (_formKey.currentState!.validate()) {
       await _homes.doc(documentId).update({
-        'homeName': newName.toUpperCase(),
+        'homeName': newName.toCapitalCase(),
       });
       _homeNameController.clear();
       setState(() {});
@@ -76,7 +77,7 @@ class _HomesPageState extends State<HomesPage> {
     return Scaffold(
       appBar: AppBar(
         // Sets the phone icons to use dark mode
-        systemOverlayStyle: SystemUiOverlayStyle(statusBarIconBrightness: Brightness.light),
+        systemOverlayStyle: const SystemUiOverlayStyle(statusBarIconBrightness: Brightness.light),
         backgroundColor: homeventory.primary,
         title: const Text('HOMEVENTORY: HOMES', style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold,)),
         centerTitle: true,
@@ -148,7 +149,7 @@ class _HomesPageState extends State<HomesPage> {
         ),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: _homes.snapshots(),
+        stream: _homes.orderBy('homeName', descending: false).snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());

@@ -7,6 +7,7 @@ import 'Homes.dart';
 import 'ItemsForm.dart';
 import '../main.dart';
 import 'Rooms.dart';
+import 'package:change_case/change_case.dart';
 
 class RoomItem {
   int? itemId;
@@ -100,28 +101,28 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
                 height: 40,
                 width: 60,
                 child: Column(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: IconButton(
-                          icon: const Icon(Icons.home_work_outlined),
-                          alignment: Alignment.topCenter,
-                          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          iconSize: 40,
-                          color: homeventory.onSecondary,
-                          tooltip: "Homes",
-                          onPressed: () {
-                            Navigator.pop(context);
-                            // Navigator.push(
-                            //     context,
-                            //     PageTransition(
-                            //         child: Navigator.pop(context),
-                            //         type: PageTransitionType.leftToRight,
-                            //         duration: Duration(milliseconds: 300)));
-                          },
-                        ),
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: IconButton(
+                        icon: const Icon(Icons.home_work_outlined),
+                        alignment: Alignment.topCenter,
+                        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        iconSize: 40,
+                        color: homeventory.onSecondary,
+                        tooltip: "Homes",
+                        onPressed: () {
+                          Navigator.pop(context);
+                          // Navigator.push(
+                          //     context,
+                          //     PageTransition(
+                          //         child: Navigator.pop(context),
+                          //         type: PageTransitionType.leftToRight,
+                          //         duration: Duration(milliseconds: 300)));
+                        },
                       ),
-                    ],
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -140,10 +141,11 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
       ),
       body: StreamBuilder<QuerySnapshot>(
         // stream: db
-          stream: FirestoreInstance.getInstance()
+        stream: FirestoreInstance.getInstance()
             .collection('rooms')
             .doc(widget.roomId)
             .collection('items')
+            .orderBy('itemName', descending: false)
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -184,32 +186,55 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
                     ),
                     children: [
                       ListTile(
-                        title: Text('Type: ${item['itemType'] ?? 'N/A'}', style: TextStyle(fontWeight: FontWeight.bold, color: homeventory.onSecondary, fontSize: 15,)),
+                        title: Text('Type: ${item['itemType'] ?? 'N/A'}',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: homeventory.onSecondary,
+                              fontSize: 15,
+                            )),
                         dense: false,
                       ),
                       ListTile(
-                        title: Text('Subtype: ${item['itemSubtype'] ?? 'N/A'}', style: TextStyle(fontWeight: FontWeight.bold, color: homeventory.onSecondary)),
+                        title: Text('Subtype: ${item['itemSubtype'] ?? 'N/A'}',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: homeventory.onSecondary)),
                         dense: false,
                       ),
                       ListTile(
-                        title: Text('Brand: ${item['itemBrand'] ?? 'N/A'}', style: TextStyle(fontWeight: FontWeight.bold, color: homeventory.onSecondary)),
+                        title: Text('Brand: ${item['itemBrand'] ?? 'N/A'}',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: homeventory.onSecondary)),
                         dense: false,
                       ),
                       ListTile(
-                        title: Text('Model: ${item['itemModel'] ?? 'N/A'}', style: TextStyle(fontWeight: FontWeight.bold, color: homeventory.onSecondary)),
+                        title: Text('Model: ${item['itemModel'] ?? 'N/A'}',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: homeventory.onSecondary)),
                         dense: false,
                       ),
                       ListTile(
                         title: Text(
-                            'Dimensions: ${item['itemDimensions'] ?? 'N/A'}', style: TextStyle(fontWeight: FontWeight.bold, color: homeventory.onSecondary)),
+                            'Dimensions: ${item['itemDimensions'] ?? 'N/A'}',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: homeventory.onSecondary)),
                         dense: false,
                       ),
                       ListTile(
-                        title: Text('Color: ${item['itemColor'] ?? 'N/A'}', style: TextStyle(fontWeight: FontWeight.bold, color: homeventory.onSecondary)),
+                        title: Text('Color: ${item['itemColor'] ?? 'N/A'}',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: homeventory.onSecondary)),
                         dense: false,
                       ),
                       ListTile(
-                        title: Text('Notes: ${item['itemNotes'] ?? 'N/A'}', style: TextStyle(fontWeight: FontWeight.bold, color: homeventory.onSecondary)),
+                        title: Text('Notes: ${item['itemNotes'] ?? 'N/A'}',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: homeventory.onSecondary)),
                         dense: false,
                       ),
                     ],
@@ -227,7 +252,8 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
                                 'Edit or Delete ${items[index]["itemName"]}?'),
                             actions: <Widget>[
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
@@ -249,7 +275,6 @@ class _RoomItemsPageState extends State<RoomItemsPage> {
                                       );
                                     },
                                     child: Row(
-
                                       children: [
                                         const Text('Edit  '),
                                         Icon(Icons.edit),

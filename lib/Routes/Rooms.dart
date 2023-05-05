@@ -1,3 +1,4 @@
+import 'package:change_case/change_case.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hvtest1/Routes/Homes.dart';
@@ -41,7 +42,7 @@ class _RoomsPageState extends State<RoomsPage> {
           .doc(widget.homeId)
           .collection('rooms')
           .add({
-        'roomName': _roomNameController.text.toUpperCase(),
+        'roomName': _roomNameController.text.toCapitalCase(),
       });
       _roomNameController.clear();
       Navigator.of(context).pop();
@@ -57,7 +58,7 @@ class _RoomsPageState extends State<RoomsPage> {
           .collection('rooms')
           .doc(documentId)
           .update({
-        'roomName': newName.toUpperCase(),
+        'roomName': newName.toCapitalCase(),
       });
       _roomNameController.clear();
     }
@@ -164,6 +165,7 @@ class _RoomsPageState extends State<RoomsPage> {
             .collection('homes')
             .doc(widget.homeId)
             .collection('rooms')
+            .orderBy('roomName', descending: false)
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
