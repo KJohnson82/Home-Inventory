@@ -35,13 +35,13 @@ Future<void> main() async {
       theme: ThemeData.from(colorScheme: homeventory, useMaterial3: false, textTheme: GoogleFonts.poppinsTextTheme()),
       title: 'HOMVENTORY',
       home: Scaffold(
-        appBar: AppBar(
-          // Sets the phone icons to use dark mode
-          systemOverlayStyle: SystemUiOverlayStyle(statusBarIconBrightness: Brightness.light),
-          backgroundColor: homeventory.primary,
-          title: const Text('HOMEVENTORY', style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold,)),
-          centerTitle: true,
-        ),
+        // appBar: AppBar(
+        //   // Sets the phone icons to use dark mode
+        //   systemOverlayStyle: SystemUiOverlayStyle(statusBarIconBrightness: Brightness.light),
+        //   backgroundColor: homeventory.primary,
+        //   title: const Text('HOMEVENTORY', style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold,)),
+        //   centerTitle: true,
+        // ),
         // Launches the Homes Page as the main app page
         body: HomesPage(),
       ),

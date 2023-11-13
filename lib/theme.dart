@@ -5,11 +5,11 @@ import 'package:google_fonts/google_fonts.dart';
 
 const ColorScheme homeventory = ColorScheme(
   brightness: Brightness.dark,
-  primary: Color(0xff455a64),
+  primary: Color(0xff40798C),
   onPrimary: Color(0xffffffff),
   primaryContainer: Color(0xff0081a5),
   onPrimaryContainer: Color(0xffffffff),
-  secondary: Color(0xff00acc1),
+  secondary: Color(0xff93a7aa),
   onSecondary: Color(0xffffffff),
   secondaryContainer: Color(0xffffba2a),
   onSecondaryContainer: Color(0xff232323),
@@ -21,7 +21,7 @@ const ColorScheme homeventory = ColorScheme(
   onError: Color(0xffffffff),
   errorContainer: Color(0xffffdad6),
   onErrorContainer: Color(0xff410002),
-  background: Color(0xffb0bec5),
+  background: Color(0xffdbd3d8),
   onBackground: Color(0xff232323),
   surface: Color(0xffffffff),
   onSurface: Color(0xffffffff),

@@ -104,7 +104,7 @@ class _RoomsPageState extends State<RoomsPage> {
                         color: homeventory.onSecondary,
                         tooltip: "Homes",
                         onPressed: () {
-                          Navigator.push(
+                          Navigator.pop(
                               context,
                               PageTransition(
                                   child: HomesPage(),

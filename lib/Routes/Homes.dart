@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hvtest1/firestore_instance.dart';
 import '../theme.dart';
 import 'Rooms.dart';
@@ -139,6 +140,13 @@ class _HomesPageState extends State<HomesPage> {
           ],
         ),
       ),
+        appBar: AppBar(
+    // Sets the phone icons to use dark mode
+    systemOverlayStyle: SystemUiOverlayStyle(statusBarIconBrightness: Brightness.light),
+    backgroundColor: homeventory.primary,
+    title: const Text('HOMEVENTORY', style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold,)),
+    centerTitle: true,
+    ),
       body: StreamBuilder<QuerySnapshot>(
         stream: _homes.snapshots(),
         builder: (context, snapshot) {
@@ -286,6 +294,7 @@ class _HomesPageState extends State<HomesPage> {
         },
       ),
       floatingActionButton: FloatingActionButton.large(
+        backgroundColor: homeventory.primary,
         //Checks to see how many home objects exist and if it less than three allows you to add a new object, if not, it makes the button non-clickable
         elevation: 3,
         // onPressed: () {
